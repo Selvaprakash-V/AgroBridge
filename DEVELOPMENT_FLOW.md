@@ -53,3 +53,8 @@
 - Notes: Development phase entry for project flow.
 
 
+### Step 12 - ux: improve header layout and mobile menu spacing
+- Time: 2026-02-23 22:42:17
+- Notes: Development phase entry for project flow.
+
+
