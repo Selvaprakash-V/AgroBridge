@@ -128,3 +128,8 @@
 - Notes: Development phase entry for project flow.
 
 
+### Step 27 - meta: document developer setup and local run steps
+- Time: 2026-02-23 22:42:21
+- Notes: Development phase entry for project flow.
+
+
