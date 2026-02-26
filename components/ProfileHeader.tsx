@@ -75,7 +75,7 @@ export default function ProfileHeader() {
       <div className="container mx-auto max-w-7xl">
         <div className="bg-white/30 backdrop-blur-2xl shadow-lg rounded-3xl border border-white/40 px-4 md:px-6 py-3 md:py-4" style={{ background: 'linear-gradient(135deg, rgba(167, 243, 208, 0.4) 0%, rgba(134, 239, 172, 0.4) 100%)' }}>
           <div className="flex items-center justify-between">
-            
+
             {/* Logo & Greeting */}
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 md:w-12 md:h-12 bg-white/40 backdrop-blur-xl rounded-2xl flex items-center justify-center border border-white/60">
@@ -93,68 +93,73 @@ export default function ProfileHeader() {
 
             {/* Actions */}
             <div className="flex items-center gap-2 md:gap-3">
-            
-            {/* Language Badge */}
-            <div className="hidden md:flex items-center gap-2 bg-white/50 backdrop-blur-sm border border-white/60 rounded-full px-4 py-2 shadow-sm">
-              <Globe className="w-4 h-4 text-green-700" />
-              <span className="text-sm font-semibold text-gray-800">{language?.name || "English"}</span>
-            </div>
-            
-            {/* Theme Toggle */}
-            <div className="hidden sm:block">
-              <ThemeToggle />
-            </div>
 
-            {/* Audio Toggle - Always Visible & Big */}
-            <button
-              onClick={() => setAudioEnabled(!audioEnabled)}
-              className={`p-2 md:p-3 rounded-full transition-all shadow-md ${
-                audioEnabled 
-                  ? "bg-green-500 text-white shadow-green-200" 
-                  : "bg-gray-100 text-gray-400"
-              }`}
-              title={audioEnabled ? t('audioOn') : t('audioOff')}
-            >
-              {audioEnabled ? <Volume2 className="w-5 h-5 md:w-6 md:h-6" /> : <VolumeX className="w-5 h-5 md:w-6 md:h-6" />}
-            </button>
+              {/* Language Badge */}
+              <div className="hidden md:flex items-center gap-2 bg-white/50 backdrop-blur-sm border border-white/60 rounded-full px-4 py-2 shadow-sm">
+                <Globe className="w-4 h-4 text-green-700" />
+                <span className="text-sm font-semibold text-gray-800">{language?.name || "English"}</span>
+              </div>
 
-            {/* Desktop: Quick Actions */}
-            <div className="hidden md:flex items-center gap-2">
+              {/* Theme Toggle */}
+              <div className="hidden sm:block">
+                <ThemeToggle />
+              </div>
+
+              {/* Audio Toggle - Always Visible & Big */}
               <button
-                onClick={handleNewSession}
-                className="flex items-center gap-2 bg-green-50/80 backdrop-blur-sm text-green-700 px-4 py-2 rounded-full hover:bg-green-100 transition-all border border-green-200/50 font-semibold shadow-sm"
+                onClick={() => setAudioEnabled(!audioEnabled)}
+                className={`p-2 md:p-3 rounded-full transition-all shadow-md ${audioEnabled
+                    ? "bg-green-500 text-white shadow-green-200"
+                    : "bg-gray-100 text-gray-400"
+                  }`}
+                title={audioEnabled ? t('audioOn') : t('audioOff')}
               >
-                <RefreshCw className="w-4 h-4" />
-                <span>{t('newSession')}</span>
-                <AudioButton text={t('newSession')} className="ml-1" />
+                {audioEnabled ? <Volume2 className="w-5 h-5 md:w-6 md:h-6" /> : <VolumeX className="w-5 h-5 md:w-6 md:h-6" />}
               </button>
 
+              {/* Desktop: Quick Actions */}
+              <div className="hidden md:flex items-center gap-2">
+                <div
+                  role="button"
+                  tabIndex={0}
+                  onClick={handleNewSession}
+                  onKeyDown={(e) => e.key === 'Enter' && handleNewSession()}
+                  className="flex items-center gap-2 bg-green-50/80 backdrop-blur-sm text-green-700 px-4 py-2 rounded-full hover:bg-green-100 transition-all border border-green-200/50 font-semibold shadow-sm cursor-pointer"
+                >
+                  <RefreshCw className="w-4 h-4" />
+                  <span>{t('newSession')}</span>
+                  <AudioButton text={t('newSession')} className="ml-1" />
+                </div>
+
+                <div
+                  role="button"
+                  tabIndex={0}
+                  onClick={handleChangeLanguage}
+                  onKeyDown={(e) => e.key === 'Enter' && handleChangeLanguage()}
+                  className="flex items-center gap-2 bg-blue-50/80 backdrop-blur-sm text-blue-700 px-4 py-2 rounded-full hover:bg-blue-100 transition-all border border-blue-200/50 font-semibold shadow-sm cursor-pointer"
+                >
+                  <Globe className="w-4 h-4" />
+                  <span>{t('changeLanguage')}</span>
+                  <AudioButton text={t('changeLanguage')} className="ml-1" />
+                </div>
+              </div>
+
+              {/* Mobile Menu Toggle */}
               <button
-                onClick={handleChangeLanguage}
-                className="flex items-center gap-2 bg-blue-50/80 backdrop-blur-sm text-blue-700 px-4 py-2 rounded-full hover:bg-blue-100 transition-all border border-blue-200/50 font-semibold shadow-sm"
+                onClick={() => setMenuOpen(!menuOpen)}
+                className="p-2 rounded-full hover:bg-gray-100/80 text-gray-700 transition-all md:hidden shadow-sm"
               >
-                <Globe className="w-4 h-4" />
-                <span>{t('changeLanguage')}</span>
-                <AudioButton text={t('changeLanguage')} className="ml-1" />
+                {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
               </button>
             </div>
-
-            {/* Mobile Menu Toggle */}
-            <button
-              onClick={() => setMenuOpen(!menuOpen)}
-              className="p-2 rounded-full hover:bg-gray-100/80 text-gray-700 transition-all md:hidden shadow-sm"
-            >
-              {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </button>
           </div>
         </div>
-      </div>
 
         {/* Mobile Menu - Clean & Spacious */}
         {menuOpen && (
           <div className="mt-3 md:hidden bg-white/30 backdrop-blur-2xl rounded-2xl shadow-lg border border-white/40 overflow-hidden animate-in slide-in-from-top-2 duration-200" style={{ background: 'linear-gradient(135deg, rgba(167, 243, 208, 0.4) 0%, rgba(134, 239, 172, 0.4) 100%)' }}>
             <div className="p-4 space-y-3">
-              
+
               {/* Language Change Button with Current Language */}
               {/* Change Language */}
               <button
@@ -167,7 +172,7 @@ export default function ProfileHeader() {
                   <span className="text-xs font-bold text-gray-900">{language?.name || "English"}</span>
                 </div>
               </button>
-              
+
               {/* User Info Card with New Session & Delete */}
               <div className="flex gap-2">
                 <div className="flex-1 bg-white/50 backdrop-blur-sm rounded-xl p-4 flex items-center gap-3 border border-white/60">
@@ -186,7 +191,7 @@ export default function ProfileHeader() {
                     <span className="text-xs font-semibold text-red-600">{t('deleteData')}</span>
                   </button>
                 </div>
-                
+
                 <button
                   onClick={() => { handleNewSession(); setMenuOpen(false); }}
                   className="flex flex-col items-center justify-center gap-1 bg-white/50 backdrop-blur-sm px-4 py-3 rounded-xl hover:bg-white/70 transition-all border border-white/60"
