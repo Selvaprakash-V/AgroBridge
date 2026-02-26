@@ -34,7 +34,7 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-green-100">
+    <div className="min-h-screen bg-gradient-to-b from-emerald-50 via-white to-green-50">
       <ProfileHeader />
 
       {/* Main Grid */}
@@ -53,7 +53,7 @@ export default function Dashboard() {
             tabIndex={0}
             onClick={() => navigateTo("/voice")}
             onKeyDown={(e) => e.key === 'Enter' && navigateTo("/voice")}
-            className="group bg-white/20 backdrop-blur-2xl rounded-3xl md:rounded-4xl shadow-lg hover:shadow-2xl border border-white/40 p-6 md:p-8 h-48 md:h-64 transition-all duration-300 text-gray-800 relative overflow-hidden cursor-pointer"
+            className="group bg-white/20 backdrop-blur-2xl rounded-3xl md:rounded-4xl shadow-lg hover:shadow-2xl border border-white/40 p-6 md:p-8 h-48 md:h-64 transition-all duration-300 transform-gpu hover:scale-105 text-gray-800 relative overflow-hidden cursor-pointer"
             style={{ background: 'linear-gradient(135deg, rgba(168, 85, 247, 0.4) 0%, rgba(192, 132, 252, 0.4) 50%, rgba(216, 180, 254, 0.4) 100%)' }}
           >
             <div className="absolute top-3 right-3 z-20">
@@ -75,7 +75,7 @@ export default function Dashboard() {
             tabIndex={0}
             onClick={() => navigateTo("/chat")}
             onKeyDown={(e) => e.key === 'Enter' && navigateTo("/chat")}
-            className="group bg-white/20 backdrop-blur-2xl rounded-3xl md:rounded-4xl shadow-lg hover:shadow-2xl border border-white/40 p-6 md:p-8 h-48 md:h-64 transition-all duration-300 text-gray-800 relative overflow-hidden cursor-pointer"
+            className="group bg-white/20 backdrop-blur-2xl rounded-3xl md:rounded-4xl shadow-lg hover:shadow-2xl border border-white/40 p-6 md:p-8 h-48 md:h-64 transition-all duration-300 transform-gpu hover:scale-105 text-gray-800 relative overflow-hidden cursor-pointer"
             style={{ background: 'linear-gradient(135deg, rgba(34, 197, 94, 0.4) 0%, rgba(74, 222, 128, 0.4) 50%, rgba(134, 239, 172, 0.4) 100%)' }}
           >
             <div className="absolute top-3 right-3 z-20">
@@ -97,7 +97,7 @@ export default function Dashboard() {
             tabIndex={0}
             onClick={() => navigateTo("/image")}
             onKeyDown={(e) => e.key === 'Enter' && navigateTo("/image")}
-            className="group bg-white/20 backdrop-blur-2xl rounded-3xl md:rounded-4xl shadow-lg hover:shadow-2xl border border-white/40 p-6 md:p-8 h-48 md:h-64 transition-all duration-300 text-gray-800 relative overflow-hidden cursor-pointer"
+            className="group bg-white/20 backdrop-blur-2xl rounded-3xl md:rounded-4xl shadow-lg hover:shadow-2xl border border-white/40 p-6 md:p-8 h-48 md:h-64 transition-all duration-300 transform-gpu hover:scale-105 text-gray-800 relative overflow-hidden cursor-pointer"
             style={{ background: 'linear-gradient(135deg, rgba(249, 115, 22, 0.4) 0%, rgba(251, 146, 60, 0.4) 50%, rgba(251, 191, 36, 0.4) 100%)' }}
           >
             <div className="absolute top-3 right-3 z-20">
@@ -119,7 +119,7 @@ export default function Dashboard() {
             tabIndex={0}
             onClick={() => navigateTo("/learn")}
             onKeyDown={(e) => e.key === 'Enter' && navigateTo("/learn")}
-            className="group bg-white/20 backdrop-blur-2xl rounded-3xl md:rounded-4xl shadow-lg hover:shadow-2xl border border-white/40 p-6 md:p-8 h-48 md:h-64 transition-all duration-300 text-gray-800 relative overflow-hidden cursor-pointer"
+            className="group bg-white/20 backdrop-blur-2xl rounded-3xl md:rounded-4xl shadow-lg hover:shadow-2xl border border-white/40 p-6 md:p-8 h-48 md:h-64 transition-all duration-300 transform-gpu hover:scale-105 text-gray-800 relative overflow-hidden cursor-pointer"
             style={{ background: 'linear-gradient(135deg, rgba(254, 215, 170, 0.5) 0%, rgba(253, 186, 116, 0.5) 50%, rgba(251, 146, 60, 0.5) 100%)' }}
           >
             <div className="absolute top-3 right-3 z-20">
@@ -141,7 +141,7 @@ export default function Dashboard() {
             tabIndex={0}
             onClick={() => navigateTo("/crop-doctor")}
             onKeyDown={(e) => e.key === 'Enter' && navigateTo("/crop-doctor")}
-            className="group bg-white/20 backdrop-blur-2xl rounded-3xl md:rounded-4xl shadow-lg hover:shadow-2xl border border-white/40 p-6 md:p-8 h-48 md:h-64 transition-all duration-300 text-gray-800 relative overflow-hidden cursor-pointer"
+            className="group bg-white/20 backdrop-blur-2xl rounded-3xl md:rounded-4xl shadow-lg hover:shadow-2xl border border-white/40 p-6 md:p-8 h-48 md:h-64 transition-all duration-300 transform-gpu hover:scale-105 text-gray-800 relative overflow-hidden cursor-pointer"
             style={{ background: 'linear-gradient(135deg, rgba(20, 184, 166, 0.4) 0%, rgba(45, 212, 191, 0.4) 50%, rgba(94, 234, 212, 0.4) 100%)' }}
           >
             <div className="absolute top-3 right-3 z-20">
@@ -163,7 +163,7 @@ export default function Dashboard() {
             tabIndex={0}
             onClick={() => navigateTo("/almanac")}
             onKeyDown={(e) => e.key === 'Enter' && navigateTo("/almanac")}
-            className="group bg-white/20 backdrop-blur-2xl rounded-3xl md:rounded-4xl shadow-lg hover:shadow-2xl border border-white/40 p-6 md:p-8 h-48 md:h-64 transition-all duration-300 text-gray-800 relative overflow-hidden cursor-pointer"
+            className="group bg-white/20 backdrop-blur-2xl rounded-3xl md:rounded-4xl shadow-lg hover:shadow-2xl border border-white/40 p-6 md:p-8 h-48 md:h-64 transition-all duration-300 transform-gpu hover:scale-105 text-gray-800 relative overflow-hidden cursor-pointer"
             style={{ background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.4) 0%, rgba(129, 140, 248, 0.4) 50%, rgba(165, 180, 252, 0.4) 100%)' }}
           >
             <div className="absolute top-3 right-3 z-20">
@@ -185,7 +185,7 @@ export default function Dashboard() {
             tabIndex={0}
             onClick={() => navigateTo("/insights")}
             onKeyDown={(e) => e.key === 'Enter' && navigateTo("/insights")}
-            className="group bg-white/20 backdrop-blur-2xl rounded-3xl md:rounded-4xl shadow-lg hover:shadow-2xl border border-white/40 p-6 md:p-8 h-48 md:h-64 transition-all duration-300 text-gray-800 relative overflow-hidden cursor-pointer"
+            className="group bg-white/20 backdrop-blur-2xl rounded-3xl md:rounded-4xl shadow-lg hover:shadow-2xl border border-white/40 p-6 md:p-8 h-48 md:h-64 transition-all duration-300 transform-gpu hover:scale-105 text-gray-800 relative overflow-hidden cursor-pointer"
             style={{ background: 'linear-gradient(135deg, rgba(244, 63, 94, 0.4) 0%, rgba(251, 113, 133, 0.4) 50%, rgba(253, 164, 175, 0.4) 100%)' }}
           >
             <div className="absolute top-3 right-3 z-20">
@@ -207,7 +207,7 @@ export default function Dashboard() {
             tabIndex={0}
             onClick={() => navigateTo("/schemes")}
             onKeyDown={(e) => e.key === 'Enter' && navigateTo("/schemes")}
-            className="group bg-white/20 backdrop-blur-2xl rounded-3xl md:rounded-4xl shadow-lg hover:shadow-2xl border border-white/40 p-6 md:p-8 h-48 md:h-64 transition-all duration-300 text-gray-800 relative overflow-hidden cursor-pointer"
+            className="group bg-white/20 backdrop-blur-2xl rounded-3xl md:rounded-4xl shadow-lg hover:shadow-2xl border border-white/40 p-6 md:p-8 h-48 md:h-64 transition-all duration-300 transform-gpu hover:scale-105 text-gray-800 relative overflow-hidden cursor-pointer"
             style={{ background: 'linear-gradient(135deg, rgba(245, 158, 11, 0.4) 0%, rgba(251, 191, 36, 0.4) 50%, rgba(253, 224, 71, 0.4) 100%)' }}
           >
             <div className="absolute top-3 right-3 z-20">
@@ -250,6 +250,14 @@ export default function Dashboard() {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Floating Action Button */}
+      <div className="fixed right-5 bottom-6 z-50">
+        <button onClick={() => navigateTo('/chat')} className="flex items-center gap-3 bg-emerald-600 text-white px-4 py-3 rounded-full shadow-xl hover:shadow-2xl transform transition-transform">
+          <MessageCircle className="w-5 h-5" />
+          <span className="hidden sm:inline font-semibold">{t('chat') || 'Chat'}</span>
+        </button>
       </div>
 
 
