@@ -38,7 +38,7 @@ export default function MessageBubble({ message }: MessageBubbleProps) {
 
   return (
     <div
-      className={`flex gap-2 sm:gap-3 ${isUser ? "justify-end" : "justify-start"} mb-3 sm:mb-4 min-w-0`}
+      className={`flex gap-2 sm:gap-3 ${isUser ? "justify-end" : "justify-start"} mb-3 sm:mb-4 min-w-0 transition-transform duration-200`}
     >
       {/* Avatar */}
       {!isUser && (
@@ -50,7 +50,7 @@ export default function MessageBubble({ message }: MessageBubbleProps) {
       {/* Message Content */}
       <div className="flex flex-col gap-1 max-w-[85%] sm:max-w-[75%] min-w-0">
         <div
-          className={`rounded-xl sm:rounded-2xl px-3 py-2 sm:px-4 sm:py-3 shadow-sm ${
+          className={`rounded-xl sm:rounded-2xl px-3 py-2 sm:px-4 sm:py-3 shadow-sm transform hover:scale-[1.01] ${
             isUser
               ? "bg-green-600 text-white rounded-br-none"
               : "bg-gray-100 text-gray-800 rounded-bl-none"
@@ -163,7 +163,7 @@ export default function MessageBubble({ message }: MessageBubbleProps) {
         </div>
 
         {/* Copy button for assistant messages */}
-        {!isUser && (
+          {!isUser && (
           <button
             onClick={handleCopy}
             className="flex items-center gap-1.5 text-xs text-gray-600 hover:text-gray-800 transition-colors px-2 py-1 hover:bg-gray-100 rounded-lg self-start"
