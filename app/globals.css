@@ -26,6 +26,21 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+/* Design tokens for improved UI */
+:root {
+  --primary-gradient: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
+  --card-bg: rgba(255,255,255,0.26);
+  --glass-border: rgba(255,255,255,0.35);
+}
+
+.card {
+  background: var(--card-bg);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--glass-border);
+  border-radius: 1rem;
+  box-shadow: 0 6px 20px rgba(16,24,40,0.08);
+}
+
 /* Theme attribute support: toggles via `document.documentElement.dataset.theme` */
 [data-theme="dark"] {
   --background: #071014;
