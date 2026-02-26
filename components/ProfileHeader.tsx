@@ -78,18 +78,20 @@ export default function ProfileHeader() {
 
             {/* Logo & Greeting */}
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 md:w-12 md:h-12 bg-white/40 backdrop-blur-xl rounded-2xl flex items-center justify-center border border-white/60">
-                {new Date().getHours() >= 6 && new Date().getHours() < 18 ? (
-                  <Sun className="w-5 h-5 md:w-6 md:h-6 text-yellow-600 drop-shadow-[0_0_12px_rgba(202,138,4,0.8)] fill-yellow-400" />
-                ) : (
-                  <Moon className="w-5 h-5 md:w-6 md:h-6 text-blue-400 drop-shadow-[0_0_12px_rgba(96,165,250,0.8)] fill-blue-200" />
-                )}
+              <div className="w-10 h-10 md:w-12 md:h-12 rounded-2xl p-0.5" style={{ background: 'linear-gradient(135deg, rgba(16,185,129,0.9), rgba(6,182,212,0.9))' }}>
+                <div className="w-full h-full bg-white/40 backdrop-blur-xl rounded-lg flex items-center justify-center border border-white/60">
+                  {new Date().getHours() >= 6 && new Date().getHours() < 18 ? (
+                    <Sun className="w-5 h-5 md:w-6 md:h-6 text-yellow-600 drop-shadow-[0_0_8px_rgba(202,138,4,0.6)] fill-yellow-400" />
+                  ) : (
+                    <Moon className="w-5 h-5 md:w-6 md:h-6 text-blue-400 drop-shadow-[0_0_8px_rgba(96,165,250,0.6)] fill-blue-200" />
+                  )}
+                </div>
               </div>
               <div className="flex flex-col">
                 <div className="flex items-center gap-2">
-                  <h1 className="text-base md:text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-800 to-green-600 leading-tight">{greeting}</h1>
-                  <AudioButton text={greeting} className="!p-2" />
-                </div>
+                    <h1 className="text-base md:text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-800 to-green-600 leading-tight">{greeting}</h1>
+                    <AudioButton text={greeting} className="!p-2" />
+                  </div>
                 <p className="text-xs text-gray-700/80 mt-0.5">{t('appName')}</p>
               </div>
             </div>
