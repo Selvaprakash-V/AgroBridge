@@ -254,7 +254,11 @@ export default function Dashboard() {
 
       {/* Floating Action Button */}
       <div className="fixed right-5 bottom-6 z-50">
-        <button onClick={() => navigateTo('/chat')} className="flex items-center gap-3 bg-emerald-600 text-white px-4 py-3 rounded-full shadow-xl hover:shadow-2xl transform transition-transform">
+        <button
+          aria-label="Open chat"
+          onClick={() => navigateTo('/chat')}
+          className="flex items-center gap-3 bg-gradient-to-r from-emerald-500 to-teal-400 text-white px-4 py-3 rounded-full shadow-xl hover:shadow-2xl transform transition-transform hover:-translate-y-1 active:translate-y-0"
+        >
           <MessageCircle className="w-5 h-5" />
           <span className="hidden sm:inline font-semibold">{t('chat') || 'Chat'}</span>
         </button>
