@@ -92,10 +92,10 @@ export default function WeatherCard() {
   }
 
   return (
-    <div className="bg-white/30 backdrop-blur-2xl rounded-3xl shadow-lg border border-white/40 p-8 h-48 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, rgba(96, 165, 250, 0.4) 0%, rgba(59, 130, 246, 0.4) 50%, rgba(99, 102, 241, 0.4) 100%)' }}>
+    <div className="card p-8 h-48 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, rgba(96, 165, 250, 0.28) 0%, rgba(59, 130, 246, 0.22) 50%, rgba(99, 102, 241, 0.18) 100%)' }}>
       {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-10">
-        <Cloud className="w-32 h-32 absolute -top-8 -right-8 text-blue-700" />
+      <div className="absolute inset-0 opacity-12 pointer-events-none">
+        <Cloud className="w-40 h-40 absolute -top-10 -right-10 text-blue-700" />
       </div>
 
       {/* Content */}
@@ -108,7 +108,7 @@ export default function WeatherCard() {
           </div>
           
           <div className="flex items-baseline gap-3 mb-4">
-            <div className="text-6xl font-bold text-gray-900">{weather.temperature}°C</div>
+            <div className="text-6xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-sky-800 to-indigo-600">{weather.temperature}°C</div>
             <div className="text-lg text-gray-800 capitalize">{weather.description}</div>
           </div>
           
