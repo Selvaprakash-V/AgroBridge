@@ -39,10 +39,14 @@ export default function ThemeToggle() {
     <button
       onClick={toggle}
       aria-label="Toggle theme"
+      aria-pressed={theme === "dark"}
       title={theme === "dark" ? "Switch to light" : "Switch to dark"}
-      className="p-2 rounded-full transition-colors shadow-sm bg-white/60 backdrop-blur-sm border border-white/40 hover:scale-105"
+      className="relative inline-flex items-center p-1 rounded-full transition-all shadow-sm bg-white/60 backdrop-blur-sm border border-white/40 hover:scale-105"
     >
-      {theme === "dark" ? <Sun className="w-5 h-5 text-yellow-300" /> : <Moon className="w-5 h-5 text-blue-600" />}
+      <span className={`w-8 h-4 rounded-full transition-colors duration-300 ${theme === 'dark' ? 'bg-slate-700' : 'bg-yellow-200'}`} />
+      <div className={`absolute left-0 top-0 bottom-0 m-0.5 w-6 h-6 rounded-full bg-white transition-transform duration-300 ${theme === 'dark' ? 'translate-x-4 shadow-sm' : 'translate-x-0 shadow-sm'}`}>
+        {theme === "dark" ? <Sun className="w-4 h-4 text-yellow-400 m-1" /> : <Moon className="w-4 h-4 text-blue-500 m-1" />}
+      </div>
     </button>
   );
 }
