@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { User, Trash2, PlusCircle, Volume2, VolumeX, Menu, X, Globe, RefreshCw, Sun, Moon } from "lucide-react";
 import ThemeToggle from "./ui/ThemeToggle";
@@ -18,7 +18,6 @@ export default function ProfileHeader() {
   const setAudioEnabled = useStore((state) => state.setAudioEnabled);
   const [menuOpen, setMenuOpen] = useState(false);
   const language = getLanguageByCode(currentLanguage);
-  const [greeting, setGreeting] = useState('');
 
   useEffect(() => {
     if (currentLanguage) {
@@ -26,17 +25,16 @@ export default function ProfileHeader() {
     }
   }, [currentLanguage, i18n]);
 
-  useEffect(() => {
+  const greeting = useMemo(() => {
     const hour = new Date().getHours();
     if (hour >= 5 && hour < 12) {
-      setGreeting(t('goodMorning'));
+      return t('goodMorning');
     } else if (hour >= 12 && hour < 17) {
-      setGreeting(t('goodAfternoon'));
+      return t('goodAfternoon');
     } else if (hour >= 17 && hour < 21) {
-      setGreeting(t('goodEvening'));
-    } else {
-      setGreeting(t('goodNight'));
+      return t('goodEvening');
     }
+    return t('goodNight');
   }, [t]);
 
   const generateNewUUID = () => {
