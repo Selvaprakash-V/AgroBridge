@@ -33,3 +33,11 @@ export const plantAnalysisHistory = pgTable("plant_analysis_history", {
   isHealthy: text("is_healthy").notNull(), // stored as 'true' or 'false'
   timestamp: timestamp("timestamp").defaultNow().notNull(),
 });
+
+export const users = pgTable("users", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  email: text("email").notNull(),
+  username: text("username").notNull(),
+  passwordHash: text("password_hash").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});

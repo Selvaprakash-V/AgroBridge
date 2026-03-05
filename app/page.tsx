@@ -1,19 +1,29 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { useStore } from "@/store/useStore";
 import LanguageSelector from "@/components/LanguageSelector";
 import Dashboard from "@/components/Dashboard";
 
 export default function Home() {
+  const router = useRouter();
   const currentLanguage = useStore((state) => state.currentLanguage);
   const languageSelected = useStore((state) => state.languageSelected);
   const [mounted, setMounted] = useState(false);
 
-  // Handle hydration
+  // Handle hydration and client auth gate
   useEffect(() => {
     setMounted(true);
-  }, []);
+    try {
+      const raw = localStorage.getItem("user");
+      if (!raw) {
+        router.push("/landing");
+      }
+    } catch (e) {
+      router.push("/landing");
+    }
+  }, [router]);
 
   if (!mounted) {
     return (
@@ -31,6 +41,6 @@ export default function Home() {
     return <LanguageSelector />;
   }
 
-  // Show dashboard with all features
+  // Show dashboard with all features (user is present)
   return <Dashboard />;
 }

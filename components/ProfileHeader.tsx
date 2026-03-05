@@ -17,6 +17,7 @@ export default function ProfileHeader() {
   const setLanguage = useStore((state) => state.setLanguage);
   const setAudioEnabled = useStore((state) => state.setAudioEnabled);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [currentUser, setCurrentUser] = useState<{ username?: string } | null>(null);
   const language = getLanguageByCode(currentLanguage);
 
   useEffect(() => {
@@ -24,6 +25,15 @@ export default function ProfileHeader() {
       i18n.changeLanguage(currentLanguage);
     }
   }, [currentLanguage, i18n]);
+
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem("user");
+      if (raw) setCurrentUser(JSON.parse(raw));
+    } catch (e) {
+      // ignore
+    }
+  }, []);
 
   const greeting = useMemo(() => {
     const hour = new Date().getHours();
@@ -96,6 +106,28 @@ export default function ProfileHeader() {
 
             {/* Actions */}
             <div className="flex items-center gap-2 md:gap-3">
+
+              {/* Auth / User */}
+              {currentUser ? (
+                <div className="flex items-center gap-2">
+                  <div className="text-sm font-semibold text-gray-800">{currentUser.username}</div>
+                  <button
+                    onClick={() => {
+                      localStorage.removeItem("user");
+                      setCurrentUser(null);
+                      window.location.reload();
+                    }}
+                    className="px-3 py-1 rounded bg-red-50 text-red-600 text-sm"
+                  >
+                    {t('logout')}
+                  </button>
+                </div>
+              ) : (
+                <div className="flex items-center gap-2">
+                  <a href="/login" className="text-sm font-semibold text-gray-800">{t('login')}</a>
+                  <a href="/register" className="text-sm font-semibold text-emerald-700">{t('register')}</a>
+                </div>
+              )}
 
               {/* Language Badge */}
               <div className="hidden md:flex items-center gap-2 bg-white/60 backdrop-blur-sm border border-white/60 rounded-full px-4 py-2 shadow-sm">
