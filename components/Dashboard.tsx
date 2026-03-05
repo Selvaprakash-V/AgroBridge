@@ -13,7 +13,8 @@ import {
   Stethoscope,
   Calendar,
   BarChart3,
-  Building2
+  Building2,
+  Users2
 } from "lucide-react";
 import ProfileHeader from "./ProfileHeader";
 import AudioButton from "./ui/AudioButton";
@@ -201,7 +202,7 @@ export default function Dashboard() {
             </div>
           </div>
 
-          {/* Government Schemes Card - NEW */}
+          {/* Government Schemes Card */}
           <div
             role="button"
             tabIndex={0}
@@ -220,6 +221,28 @@ export default function Dashboard() {
               </div>
               <h3 className="text-xl md:text-2xl font-bold mb-2 text-gray-900">{t('govSchemes')}</h3>
               <p className="text-xs md:text-sm text-gray-800 text-center px-2">{t('govSchemesDesc')}</p>
+            </div>
+          </div>
+
+          {/* Community Card */}
+          <div
+            role="button"
+            tabIndex={0}
+            onClick={() => navigateTo("/community")}
+            onKeyDown={(e) => e.key === 'Enter' && navigateTo("/community")}
+            className="group bg-white/20 backdrop-blur-2xl rounded-3xl md:rounded-4xl shadow-lg hover:shadow-2xl border border-white/40 p-6 md:p-8 h-48 md:h-64 transition-all duration-300 transform-gpu hover:scale-105 text-gray-800 relative overflow-hidden cursor-pointer col-span-2"
+            style={{ background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.35) 0%, rgba(6, 182, 212, 0.35) 50%, rgba(59, 130, 246, 0.25) 100%)' }}
+          >
+            <div className="absolute top-3 right-3 z-20">
+              <AudioButton text={`${t('community')}. ${t('communityDesc')}`} className="bg-white/40 hover:bg-white/60 text-gray-800" />
+            </div>
+            <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            <div className="relative z-10 h-full flex flex-col items-center justify-center">
+              <div className="w-16 h-16 md:w-24 md:h-24 bg-white/40 backdrop-blur-xl rounded-full flex items-center justify-center mb-3 md:mb-4 transition-transform border border-white/60">
+                <Users2 className="w-8 h-8 md:w-12 md:h-12 text-emerald-700" />
+              </div>
+              <h3 className="text-xl md:text-2xl font-bold mb-2 text-gray-900">{t('community')}</h3>
+              <p className="text-xs md:text-sm text-gray-800 text-center px-2">{t('communityDesc')}</p>
             </div>
           </div>
 

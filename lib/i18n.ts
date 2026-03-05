@@ -169,6 +169,12 @@ const resources = {
       noInsightsDesc: 'Start scanning your crops to see personalized insights and analytics',
       startScanning: 'Start Scanning',
 
+      // Community
+      community: 'Community',
+      communityDesc: 'Share & learn with farmers',
+      communityTitle: 'Farmer Community',
+      communitySubtitle: 'Share, learn and grow together',
+
       // Government Schemes
       govSchemes: 'Govt Schemes',
       govSchemesDesc: 'Find farmer benefits',

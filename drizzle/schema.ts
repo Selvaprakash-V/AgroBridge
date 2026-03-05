@@ -41,3 +41,30 @@ export const users = pgTable("users", {
   passwordHash: text("password_hash").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
+
+export const communityPosts = pgTable("community_posts", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  authorId: uuid("author_id").notNull(),
+  authorName: text("author_name").notNull(),
+  title: text("title").notNull(),
+  content: text("content").notNull(),
+  imageUrl: text("image_url"),
+  tags: text("tags"), // comma-separated e.g. "disease,tomato"
+  likesCount: real("likes_count").notNull().default(0),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export const communityComments = pgTable("community_comments", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  postId: uuid("post_id").notNull(),
+  authorId: uuid("author_id").notNull(),
+  authorName: text("author_name").notNull(),
+  content: text("content").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export const communityLikes = pgTable("community_likes", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  postId: uuid("post_id").notNull(),
+  userId: uuid("user_id").notNull(),
+});
