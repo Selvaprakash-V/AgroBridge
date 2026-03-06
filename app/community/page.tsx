@@ -5,8 +5,9 @@ import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Heart, MessageCircle, Send, Plus, X, Tag, ArrowLeft,
-  Leaf, AlertTriangle, Droplets, Sun, Bug, Sprout,
+  Leaf, AlertTriangle, Droplets, Sun, Bug, Sprout, ImagePlus, Trash2,
 } from "lucide-react";
+import { compressImage } from "@/lib/image-compression";
 import ProfileHeader from "@/components/ProfileHeader";
 
 /* ── types ─────────────────────────────────────────────────── */
@@ -219,11 +220,34 @@ function NewPostModal({ user, onCreated, onClose }: { user: StoredUser; onCreate
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   function toggleTag(label: string) {
     setSelectedTags((prev) => prev.includes(label) ? prev.filter((t) => t !== label) : [...prev, label]);
+  }
+
+  async function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (!file.type.startsWith("image/")) { setError("Please select a valid image file."); return; }
+    setError(null);
+    setImageFile(file);
+    try {
+      const preview = await compressImage(file, 2, 1280);
+      setImagePreview(preview);
+    } catch {
+      setImagePreview(URL.createObjectURL(file));
+    }
+  }
+
+  function removeImage() {
+    setImageFile(null);
+    setImagePreview(null);
+    if (fileInputRef.current) fileInputRef.current.value = "";
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -231,6 +255,10 @@ function NewPostModal({ user, onCreated, onClose }: { user: StoredUser; onCreate
     if (!title.trim() || !content.trim()) { setError("Title and content are required."); return; }
     setError(null);
     setLoading(true);
+
+    // Store compressed image as a data URL directly (no external blob service needed)
+    const imageUrl: string | null = imagePreview ?? null;
+
     const res = await fetch("/api/community/posts", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -240,6 +268,7 @@ function NewPostModal({ user, onCreated, onClose }: { user: StoredUser; onCreate
         title,
         content,
         tags: selectedTags.join(","),
+        imageUrl,
       }),
     });
     if (res.ok) {
@@ -285,6 +314,40 @@ function NewPostModal({ user, onCreated, onClose }: { user: StoredUser; onCreate
               placeholder="Describe the issue, symptoms, or what you want to share…"
               className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white/90 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400 resize-none"
             />
+          </div>
+
+          {/* Photo upload */}
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-1.5">Photo <span className="text-gray-400 font-normal">(optional)</span></label>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={handleImageChange}
+            />
+            {imagePreview ? (
+              <div className="relative rounded-2xl overflow-hidden border border-gray-200 bg-gray-50">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={imagePreview} alt="Preview" className="w-full max-h-48 object-cover" />
+                <button
+                  type="button"
+                  onClick={removeImage}
+                  className="absolute top-2 right-2 p-1.5 rounded-full bg-black/50 hover:bg-black/70 transition text-white"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              </div>
+            ) : (
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                className="w-full flex flex-col items-center gap-2 py-6 rounded-2xl border-2 border-dashed border-gray-200 bg-gray-50 hover:bg-gray-100 hover:border-emerald-300 transition-all text-gray-400 hover:text-emerald-500"
+              >
+                <ImagePlus className="w-7 h-7" />
+                <span className="text-xs font-medium">Tap to add a photo</span>
+              </button>
+            )}
           </div>
 
           <div>
