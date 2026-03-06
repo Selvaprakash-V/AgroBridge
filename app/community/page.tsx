@@ -130,7 +130,7 @@ function CommentThread({ postId, user }: { postId: string; user: StoredUser }) {
           value={text}
           onChange={(e) => setText(e.target.value)}
           placeholder="Add a comment or solution…"
-          className="flex-1 px-3 py-2 rounded-xl border border-gray-200 bg-white/80 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400"
+          className="flex-1 px-3 py-2 rounded-xl border border-gray-200 bg-white/80 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-400"
         />
         <button
           type="submit"
@@ -303,7 +303,7 @@ function NewPostModal({ user, onCreated, onClose }: { user: StoredUser; onCreate
             <input
               value={title} onChange={(e) => setTitle(e.target.value)}
               placeholder="e.g. Brown spots on my tomato leaves"
-              className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white/90 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400"
+              className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white/90 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-400"
             />
           </div>
           <div>
@@ -312,7 +312,7 @@ function NewPostModal({ user, onCreated, onClose }: { user: StoredUser; onCreate
               value={content} onChange={(e) => setContent(e.target.value)}
               rows={4}
               placeholder="Describe the issue, symptoms, or what you want to share…"
-              className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white/90 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400 resize-none"
+              className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white/90 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-400 resize-none"
             />
           </div>
 
