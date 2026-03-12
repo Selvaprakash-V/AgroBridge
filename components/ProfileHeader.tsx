@@ -110,14 +110,20 @@ export default function ProfileHeader() {
               {/* Auth / User */}
               {currentUser ? (
                 <div className="flex items-center gap-2">
-                  <div className="text-sm font-semibold text-gray-800">{currentUser.username}</div>
+                  <div className="flex items-center gap-2 bg-white/60 backdrop-blur-sm border border-white/60 rounded-full pl-2 pr-3 py-1.5 shadow-sm">
+                    <div className="w-6 h-6 rounded-full flex items-center justify-center text-white text-[10px] font-bold shadow-sm"
+                      style={{ background: `hsl(${(currentUser.username?.charCodeAt(0) ?? 65) * 40 % 360},60%,45%)` }}>
+                      {currentUser.username?.slice(0, 1).toUpperCase()}
+                    </div>
+                    <span className="text-sm font-semibold text-gray-800">{currentUser.username}</span>
+                  </div>
                   <button
                     onClick={() => {
                       localStorage.removeItem("user");
                       setCurrentUser(null);
                       window.location.reload();
                     }}
-                    className="px-3 py-1 rounded bg-red-50 text-red-600 text-sm"
+                    className="px-3 py-1.5 rounded-full bg-red-50 hover:bg-red-100 text-red-600 text-xs font-semibold border border-red-200/60 transition-all"
                   >
                     {t('logout')}
                   </button>
