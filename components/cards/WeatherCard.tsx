@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { Cloud, Droplets, Wind, MapPin, Volume2, Loader2, RefreshCw, Thermometer } from "lucide-react";
+import { Droplets, Wind, MapPin, Volume2, Loader2, RefreshCw, Thermometer } from "lucide-react";
 import { useStore } from "@/store/useStore";
 import { getWeather } from "@/actions/weather";
 import { speakNative } from "@/lib/audio";
@@ -63,10 +63,12 @@ export default function WeatherCard() {
 
   if (loading) {
     return (
-      <div className="bg-white/30 backdrop-blur-2xl rounded-3xl shadow-lg border border-white/40 p-8 h-48 flex items-center justify-center" style={{ background: 'linear-gradient(135deg, rgba(96, 165, 250, 0.4) 0%, rgba(59, 130, 246, 0.4) 100%)' }}>
-        <div className="text-center">
-          <Loader2 className="w-12 h-12 animate-spin mx-auto mb-3 text-blue-700" />
-          <p className="text-lg font-medium text-gray-800">{t('loadingWeather')}</p>
+      <div className="rounded-3xl shadow-lg border border-white/40 p-8 h-48 flex items-center justify-center overflow-hidden relative"
+        style={{ background: 'linear-gradient(135deg, rgba(96, 165, 250, 0.35) 0%, rgba(59, 130, 246, 0.35) 100%)' }}>
+        <div className="absolute -top-8 -right-8 text-[120px] opacity-[0.10] pointer-events-none select-none">☁️</div>
+        <div className="text-center relative z-10">
+          <Loader2 className="w-10 h-10 animate-spin mx-auto mb-3 text-blue-700" />
+          <p className="text-base font-semibold text-gray-800">{t('loadingWeather')}</p>
         </div>
       </div>
     );
@@ -74,9 +76,13 @@ export default function WeatherCard() {
 
   if (!weather) {
     return (
-      <div className="bg-white/30 backdrop-blur-2xl rounded-3xl shadow-lg border border-white/40 p-8 h-48 flex items-center justify-between" style={{ background: 'linear-gradient(135deg, rgba(251, 191, 36, 0.4) 0%, rgba(249, 115, 22, 0.4) 100%)' }}>
-        <div className="flex items-center gap-4">
-          <MapPin className="w-12 h-12 text-orange-700" />
+      <div className="rounded-3xl shadow-lg border border-white/40 p-8 h-48 flex items-center justify-between overflow-hidden relative"
+        style={{ background: 'linear-gradient(135deg, rgba(251, 191, 36, 0.38) 0%, rgba(249, 115, 22, 0.38) 100%)' }}>
+        <div className="absolute -bottom-6 -right-6 text-[110px] opacity-[0.10] pointer-events-none select-none">📍</div>
+        <div className="flex items-center gap-4 relative z-10">
+          <div className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-md" style={{ background: 'linear-gradient(135deg, #92400e, #f97316)' }}>
+            <MapPin className="w-7 h-7 text-white" />
+          </div>
           <div>
             <p className="text-2xl font-bold mb-1 text-gray-900">{t('locationNeeded')}</p>
           </div>
@@ -92,63 +98,78 @@ export default function WeatherCard() {
   }
 
   return (
-    <div className="card p-8 h-48 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, rgba(96, 165, 250, 0.28) 0%, rgba(59, 130, 246, 0.22) 50%, rgba(99, 102, 241, 0.18) 100%)' }}>
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-12 pointer-events-none">
-        <Cloud className="w-40 h-40 absolute -top-10 -right-10 text-blue-700" />
+    <div className="card p-6 md:p-8 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, rgba(96, 165, 250, 0.25) 0%, rgba(59, 130, 246, 0.20) 50%, rgba(99, 102, 241, 0.15) 100%)' }}>
+      {/* Decorative cloud blob */}
+      <div className="absolute -top-8 -right-8 text-[140px] opacity-[0.08] pointer-events-none select-none">☁️</div>
+      <div className="absolute top-16 -right-2 text-[60px] opacity-[0.06] pointer-events-none select-none">🌤️</div>
+
+      {/* Top row: location + controls */}
+      <div className="flex items-start justify-between mb-3 relative z-10">
+        <div className="flex items-center gap-2">
+          <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #1d4ed8, #3b82f6)' }}>
+            <MapPin className="w-3.5 h-3.5 text-white" />
+          </div>
+          <p className="text-base md:text-lg font-bold text-gray-900">{weather.location}</p>
+        </div>
+        <div className="flex gap-2">
+          <button
+            onClick={handleSpeak}
+            className="p-2.5 bg-white/40 hover:bg-white/60 rounded-xl transition-all border border-white/50 text-blue-700 shadow-sm"
+            title={t('listen')}
+          >
+            <Volume2 className="w-4 h-4" />
+          </button>
+          <button
+            onClick={fetchWeather}
+            className="p-2.5 bg-white/40 hover:bg-white/60 rounded-xl transition-all border border-white/50 text-blue-700 shadow-sm"
+            title={t('refresh')}
+          >
+            <RefreshCw className="w-4 h-4" />
+          </button>
+        </div>
       </div>
 
-      {/* Content */}
-      <div className="relative z-10 h-full flex items-center justify-between">
-        {/* Left: Location and Temperature */}
-        <div className="flex-1">
-          <div className="flex items-center gap-2 mb-2">
-            <MapPin className="w-5 h-5 text-blue-700" />
-            <p className="text-xl font-semibold text-gray-900">{weather.location}</p>
+      {/* Main content */}
+      <div className="relative z-10 flex items-end justify-between">
+        {/* Left: temp + description */}
+        <div>
+          <div className="flex items-baseline gap-3 mb-1">
+            <span className="text-5xl md:text-6xl font-black bg-clip-text text-transparent"
+              style={{ backgroundImage: 'linear-gradient(135deg, #1e40af, #0ea5e9)' }}>
+              {weather.temperature}°
+            </span>
+            <span className="text-xl md:text-2xl font-bold text-blue-900/70">C</span>
           </div>
-          
-          <div className="flex items-baseline gap-3 mb-4">
-            <div className="text-6xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-sky-800 to-indigo-600">{weather.temperature}°C</div>
-            <div className="text-lg text-gray-800 capitalize">{weather.description}</div>
-          </div>
-          
-          {/* Weather Details */}
-          <div className="flex gap-8">
-            <div className="flex items-center gap-2">
-              <Droplets className="w-5 h-5 text-blue-600" />
-              <span className="text-lg font-medium text-gray-800">{weather.humidity}%</span>
+          <p className="text-sm md:text-base font-semibold text-gray-700 capitalize mb-3">{weather.description}</p>
+
+          {/* Stats pills */}
+          <div className="flex flex-wrap gap-2">
+            <div className="flex items-center gap-1.5 bg-white/50 backdrop-blur-sm border border-white/60 rounded-full px-3 py-1 shadow-sm">
+              <Droplets className="w-3.5 h-3.5 text-blue-600" />
+              <span className="text-xs font-semibold text-gray-800">{weather.humidity}%</span>
             </div>
-            <div className="flex items-center gap-2">
-              <Wind className="w-5 h-5 text-blue-600" />
-              <span className="text-lg font-medium text-gray-800">{weather.windSpeed} m/s</span>
+            <div className="flex items-center gap-1.5 bg-white/50 backdrop-blur-sm border border-white/60 rounded-full px-3 py-1 shadow-sm">
+              <Wind className="w-3.5 h-3.5 text-blue-600" />
+              <span className="text-xs font-semibold text-gray-800">{weather.windSpeed} m/s</span>
             </div>
+            {weather.feelsLike && (
+              <div className="flex items-center gap-1.5 bg-white/50 backdrop-blur-sm border border-white/60 rounded-full px-3 py-1 shadow-sm">
+                <Thermometer className="w-3.5 h-3.5 text-orange-500" />
+                <span className="text-xs font-semibold text-gray-800">Feels {weather.feelsLike}°</span>
+              </div>
+            )}
           </div>
         </div>
 
-        {/* Right: Weather Icon and Controls */}
-        <div className="flex flex-col items-end gap-4">
-          <div className="text-7xl">
-            {weather.description.includes('rain') ? '🌧️' : 
-             weather.description.includes('cloud') ? '☁️' : 
-             weather.description.includes('clear') ? '☀️' : '🌤️'}
-          </div>
-          
-          <div className="flex gap-2">
-            <button
-              onClick={handleSpeak}
-              className="p-3 bg-white/40 hover:bg-white/60 rounded-2xl transition-all backdrop-blur-sm border border-white/40 text-blue-700"
-              title={t('listen')}
-            >
-              <Volume2 className="w-5 h-5" />
-            </button>
-            <button
-              onClick={fetchWeather}
-              className="p-3 bg-white/40 hover:bg-white/60 rounded-2xl transition-all backdrop-blur-sm border border-white/40 text-blue-700"
-              title={t('refresh')}
-            >
-              <RefreshCw className="w-5 h-5" />
-            </button>
-          </div>
+        {/* Right: large weather emoji */}
+        <div className="text-6xl md:text-8xl drop-shadow-md select-none ml-4 transition-transform hover:scale-110 duration-300">
+          {weather.description?.toLowerCase().includes('rain') ? '🌧️' :
+           weather.description?.toLowerCase().includes('drizzle') ? '🌦️' :
+           weather.description?.toLowerCase().includes('thunder') ? '⛈️' :
+           weather.description?.toLowerCase().includes('snow') ? '🌨️' :
+           weather.description?.toLowerCase().includes('mist') || weather.description?.toLowerCase().includes('fog') ? '🌫️' :
+           weather.description?.toLowerCase().includes('cloud') ? '☁️' :
+           weather.description?.toLowerCase().includes('clear') ? '☀️' : '🌤️'}
         </div>
       </div>
     </div>
