@@ -21,6 +21,13 @@ export async function POST(req: NextRequest) {
     const { text, language } = await req.json();
     const apiKey = process.env.SARVAM_API_KEY;
 
+    if (!text || !text.trim()) {
+      return new Response(
+        JSON.stringify({ error: "Text cannot be empty" }),
+        { status: 400, headers: { "Content-Type": "application/json" } }
+      );
+    }
+
     if (!apiKey) {
       return new Response(
         JSON.stringify({ error: "API key not configured" }),

@@ -169,7 +169,7 @@ export function useChat(ttsEnabled: boolean = true) {
         });
 
         // Stream TTS audio in real-time only if enabled (ONLY the answer, not thinking)
-        if (ttsEnabled) {
+        if (ttsEnabled && answer.trim()) {
           streamTTS(answer, {
             language: currentLanguage,
             onComplete: () => {
