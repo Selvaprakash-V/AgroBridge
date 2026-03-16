@@ -19,6 +19,24 @@ export interface Message {
   isStreaming?: boolean;
 }
 
+// Strip markdown formatting so TTS doesn't read symbols aloud
+function stripMarkdownForTTS(text: string): string {
+  return text
+    .replace(/#{1,6}\s+/g, "")          // headings
+    .replace(/\*{1,3}([^*]+)\*{1,3}/g, "$1") // bold/italic ***x***, **x**, *x*
+    .replace(/_{1,2}([^_]+)_{1,2}/g, "$1")   // _x_, __x__
+    .replace(/~~([^~]+)~~/g, "$1")            // strikethrough
+    .replace(/`{1,3}[^`]*`{1,3}/g, "")       // inline code / code blocks
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1") // links → label only
+    .replace(/!?\[([^\]]*)\]\([^)]+\)/g, "$1") // images
+    .replace(/^\s*[-*+]\s+/gm, "")           // unordered list bullets
+    .replace(/^\s*\d+\.\s+/gm, "")           // ordered list numbers
+    .replace(/^\s*>\s+/gm, "")               // blockquotes
+    .replace(/[-]{3,}|[*]{3,}|[_]{3,}/g, "") // horizontal rules / leftover runs
+    .replace(/\s{2,}/g, " ")                  // collapse extra whitespace
+    .trim();
+}
+
 // Utility to parse thinking text and answer from Sarvam response
 function parseThinkingAndAnswer(text: string): { thinking: string; answer: string } {
   // Sarvam-M returns thinking in <think>...</think> tags
@@ -169,8 +187,9 @@ export function useChat(ttsEnabled: boolean = true) {
         });
 
         // Stream TTS audio in real-time only if enabled (ONLY the answer, not thinking)
-        if (ttsEnabled && answer.trim()) {
-          streamTTS(answer, {
+        const ttsText = stripMarkdownForTTS(answer);
+        if (ttsEnabled && ttsText) {
+          streamTTS(ttsText, {
             language: currentLanguage,
             onComplete: () => {
               // Mark streaming as complete in Zustand store
