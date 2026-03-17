@@ -1,16 +1,26 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { useTranslation } from "react-i18next";
+import { useStore } from "@/store/useStore";
 
 export default function LoginPage() {
+  const { t, i18n } = useTranslation();
   const router = useRouter();
+  const currentLanguage = useStore((state) => state.currentLanguage);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (currentLanguage) {
+      i18n.changeLanguage(currentLanguage);
+    }
+  }, [currentLanguage, i18n]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -24,13 +34,13 @@ export default function LoginPage() {
       });
       const data = await res.json();
       if (!res.ok) {
-        setError(data.error || "Login failed");
+        setError(data.error || t('loginFailed'));
       } else {
         if (data.user) localStorage.setItem("user", JSON.stringify(data.user));
         router.push("/");
       }
     } catch {
-      setError("Network error");
+      setError(t('networkError'));
     } finally {
       setLoading(false);
     }
@@ -60,7 +70,7 @@ export default function LoginPage() {
             <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-3xl mb-3 shadow-lg"
                  style={{ background: "linear-gradient(135deg,#10b981,#06b6d4)" }}>🌾</div>
             <h1 className="text-xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-emerald-700 to-cyan-600">AgroBridge</h1>
-            <p className="text-sm text-gray-500 mt-1">Sign in to your account</p>
+            <p className="text-sm text-gray-500 mt-1">{t('signInToAccount')}</p>
           </div>
 
           {error && (
@@ -72,20 +82,20 @@ export default function LoginPage() {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-1.5">Email</label>
+              <label className="block text-sm font-semibold text-gray-700 mb-1.5">{t('emailLabel')}</label>
               <input
                 type="email" required
                 value={email} onChange={(e) => setEmail(e.target.value)}
-                placeholder="you@example.com"
+                placeholder={t('emailPlaceholder')}
                 className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white/80 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-400 transition"
               />
             </div>
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-1.5">Password</label>
+              <label className="block text-sm font-semibold text-gray-700 mb-1.5">{t('passwordLabel')}</label>
               <input
                 type="password" required
                 value={password} onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
+                placeholder={t('passwordPlaceholder')}
                 className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white/80 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-400 transition"
               />
             </div>
@@ -94,16 +104,16 @@ export default function LoginPage() {
               className="w-full py-3 rounded-xl text-white font-semibold text-sm shadow-lg hover:opacity-90 active:scale-95 transition-all disabled:opacity-60"
               style={{ background: "linear-gradient(135deg,#10b981,#06b6d4)" }}
             >
-              {loading ? "Signing in…" : "Sign in →"}
+              {loading ? t('signingIn') : `${t('signInCta')} →`}
             </button>
           </form>
 
           <p className="mt-6 text-center text-sm text-gray-500">
-            No account?{" "}
-            <Link href="/register" className="font-semibold text-emerald-600 hover:underline">Create one free</Link>
+            {t('noAccount')}{" "}
+            <Link href="/register" className="font-semibold text-emerald-600 hover:underline">{t('createAccountCta')}</Link>
           </p>
           <p className="mt-2 text-center text-xs text-gray-400">
-            <Link href="/landing" className="hover:underline">← Back to home</Link>
+            <Link href="/landing" className="hover:underline">← {t('backToHome')}</Link>
           </p>
         </div>
       </motion.div>

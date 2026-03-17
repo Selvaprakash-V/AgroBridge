@@ -3,12 +3,14 @@
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import {
   Heart, MessageCircle, Send, Plus, X, Tag, ArrowLeft,
   Leaf, AlertTriangle, Droplets, Sun, Bug, Sprout, ImagePlus, Trash2,
 } from "lucide-react";
 import { compressImage } from "@/lib/image-compression";
 import ProfileHeader from "@/components/ProfileHeader";
+import { useStore } from "@/store/useStore";
 
 /* ── types ─────────────────────────────────────────────────── */
 interface Post {
@@ -40,12 +42,12 @@ interface StoredUser {
 
 /* ── helpers ────────────────────────────────────────────────── */
 const TAG_OPTIONS = [
-  { label: "Disease", icon: <AlertTriangle className="w-3 h-3" />, color: "bg-red-100 text-red-700 border-red-200" },
-  { label: "Healthy", icon: <Leaf className="w-3 h-3" />, color: "bg-emerald-100 text-emerald-700 border-emerald-200" },
-  { label: "Irrigation", icon: <Droplets className="w-3 h-3" />, color: "bg-sky-100 text-sky-700 border-sky-200" },
-  { label: "Pest", icon: <Bug className="w-3 h-3" />, color: "bg-orange-100 text-orange-700 border-orange-200" },
-  { label: "Sunlight", icon: <Sun className="w-3 h-3" />, color: "bg-yellow-100 text-yellow-700 border-yellow-200" },
-  { label: "Growth", icon: <Sprout className="w-3 h-3" />, color: "bg-teal-100 text-teal-700 border-teal-200" },
+  { label: "Disease", key: 'tag_disease', icon: <AlertTriangle className="w-3 h-3" />, color: "bg-red-100 text-red-700 border-red-200" },
+  { label: "Healthy", key: 'tag_healthy', icon: <Leaf className="w-3 h-3" />, color: "bg-emerald-100 text-emerald-700 border-emerald-200" },
+  { label: "Irrigation", key: 'tag_irrigation', icon: <Droplets className="w-3 h-3" />, color: "bg-sky-100 text-sky-700 border-sky-200" },
+  { label: "Pest", key: 'tag_pest', icon: <Bug className="w-3 h-3" />, color: "bg-orange-100 text-orange-700 border-orange-200" },
+  { label: "Sunlight", key: 'tag_sunlight', icon: <Sun className="w-3 h-3" />, color: "bg-yellow-100 text-yellow-700 border-yellow-200" },
+  { label: "Growth", key: 'tag_growth', icon: <Sprout className="w-3 h-3" />, color: "bg-teal-100 text-teal-700 border-teal-200" },
 ];
 
 function tagStyle(tag: string) {
@@ -78,6 +80,7 @@ function Avatar({ name }: { name: string }) {
 
 /* ── sub-components ─────────────────────────────────────────── */
 function CommentThread({ postId, user }: { postId: string; user: StoredUser }) {
+  const { t } = useTranslation();
   const [comments, setComments] = useState<Comment[]>([]);
   const [text, setText] = useState("");
   const [loading, setLoading] = useState(false);
@@ -110,9 +113,9 @@ function CommentThread({ postId, user }: { postId: string; user: StoredUser }) {
   return (
     <div className="mt-3 border-t border-white/40 pt-3 space-y-3">
       {fetching ? (
-        <p className="text-xs text-gray-400">Loading comments…</p>
+        <p className="text-xs text-gray-400">{t('loadingComments')}</p>
       ) : comments.length === 0 ? (
-        <p className="text-xs text-gray-400">No comments yet — be the first to help!</p>
+        <p className="text-xs text-gray-400">{t('noCommentsYet')}</p>
       ) : (
         comments.map((c) => (
           <div key={c.id} className="flex gap-2">
@@ -129,7 +132,7 @@ function CommentThread({ postId, user }: { postId: string; user: StoredUser }) {
         <input
           value={text}
           onChange={(e) => setText(e.target.value)}
-          placeholder="Add a comment or solution…"
+          placeholder={t('addCommentPlaceholder')}
           className="flex-1 px-3 py-2 rounded-xl border border-gray-200 bg-white/80 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-400"
         />
         <button
@@ -146,6 +149,7 @@ function CommentThread({ postId, user }: { postId: string; user: StoredUser }) {
 }
 
 function PostCard({ post, user, onLike }: { post: Post; user: StoredUser; onLike: (id: string) => void }) {
+  const { t } = useTranslation();
   const [showComments, setShowComments] = useState(false);
   const tags = post.tags ? post.tags.split(",").map((t) => t.trim()).filter(Boolean) : [];
 
@@ -195,7 +199,7 @@ function PostCard({ post, user, onLike }: { post: Post; user: StoredUser; onLike
           className="flex items-center gap-1.5 text-sm text-gray-500 hover:text-emerald-600 transition-colors"
         >
           <MessageCircle className="w-4 h-4" />
-          <span>{showComments ? "Hide" : "Comments"}</span>
+          <span>{showComments ? t('hideBtn') : t('commentsBtn')}</span>
         </button>
       </div>
 
@@ -217,6 +221,7 @@ function PostCard({ post, user, onLike }: { post: Post; user: StoredUser; onLike
 
 /* ── new-post modal ─────────────────────────────────────────── */
 function NewPostModal({ user, onCreated, onClose }: { user: StoredUser; onCreated: (p: Post) => void; onClose: () => void }) {
+  const { t } = useTranslation();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
@@ -252,7 +257,7 @@ function NewPostModal({ user, onCreated, onClose }: { user: StoredUser; onCreate
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!title.trim() || !content.trim()) { setError("Title and content are required."); return; }
+    if (!title.trim() || !content.trim()) { setError(t('titleRequired')); return; }
     setError(null);
     setLoading(true);
 
@@ -277,7 +282,7 @@ function NewPostModal({ user, onCreated, onClose }: { user: StoredUser; onCreate
       onClose();
     } else {
       const d = await res.json();
-      setError(d.error || "Failed to post");
+      setError(d.error || t('failedToPost'));
     }
     setLoading(false);
   }
@@ -291,7 +296,7 @@ function NewPostModal({ user, onCreated, onClose }: { user: StoredUser; onCreate
         className="w-full max-w-lg bg-white/80 backdrop-blur-2xl rounded-3xl shadow-2xl border border-white/60 p-6"
       >
         <div className="flex items-center justify-between mb-5">
-          <h2 className="text-lg font-bold text-gray-900">Share with the community</h2>
+          <h2 className="text-lg font-bold text-gray-900">{t('shareWithCommunity')}</h2>
           <button onClick={onClose} className="p-1.5 rounded-full hover:bg-gray-100 transition"><X className="w-5 h-5 text-gray-500" /></button>
         </div>
 
@@ -299,26 +304,26 @@ function NewPostModal({ user, onCreated, onClose }: { user: StoredUser; onCreate
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1.5">Title</label>
+            <label className="block text-sm font-semibold text-gray-700 mb-1.5">{t('postTitleLabel')}</label>
             <input
               value={title} onChange={(e) => setTitle(e.target.value)}
-              placeholder="e.g. Brown spots on my tomato leaves"
+              placeholder={t('postTitleLabel')}
               className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white/90 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-400"
             />
           </div>
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1.5">Description</label>
+            <label className="block text-sm font-semibold text-gray-700 mb-1.5">{t('postDescLabel')}</label>
             <textarea
               value={content} onChange={(e) => setContent(e.target.value)}
               rows={4}
-              placeholder="Describe the issue, symptoms, or what you want to share…"
+              placeholder={t('postDescLabel')}
               className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white/90 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-400 resize-none"
             />
           </div>
 
           {/* Photo upload */}
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1.5">Photo <span className="text-gray-400 font-normal">(optional)</span></label>
+            <label className="block text-sm font-semibold text-gray-700 mb-1.5">{t('photoLabel')} <span className="text-gray-400 font-normal">({t('optional')})</span></label>
             <input
               ref={fileInputRef}
               type="file"
@@ -345,15 +350,15 @@ function NewPostModal({ user, onCreated, onClose }: { user: StoredUser; onCreate
                 className="w-full flex flex-col items-center gap-2 py-6 rounded-2xl border-2 border-dashed border-gray-200 bg-gray-50 hover:bg-gray-100 hover:border-emerald-300 transition-all text-gray-400 hover:text-emerald-500"
               >
                 <ImagePlus className="w-7 h-7" />
-                <span className="text-xs font-medium">Tap to add a photo</span>
+                <span className="text-xs font-medium">{t('tapToAddPhoto')}</span>
               </button>
             )}
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">Tags</label>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">{t('tagsLabel')}</label>
             <div className="flex flex-wrap gap-2">
-              {TAG_OPTIONS.map(({ label, icon, color }) => (
+              {TAG_OPTIONS.map(({ label, key, icon, color }) => (
                 <button
                   key={label}
                   type="button"
@@ -362,7 +367,7 @@ function NewPostModal({ user, onCreated, onClose }: { user: StoredUser; onCreate
                     selectedTags.includes(label) ? color + " ring-2 ring-offset-1 ring-emerald-400" : "bg-gray-50 text-gray-500 border-gray-200 hover:bg-gray-100"
                   }`}
                 >
-                  {icon}{label}
+                  {icon}{t(key)}
                 </button>
               ))}
             </div>
@@ -374,7 +379,7 @@ function NewPostModal({ user, onCreated, onClose }: { user: StoredUser; onCreate
             className="w-full py-3 rounded-xl text-white font-semibold shadow-lg hover:opacity-90 active:scale-95 transition-all disabled:opacity-60"
             style={{ background: "linear-gradient(135deg,#10b981,#06b6d4)" }}
           >
-            {loading ? "Posting…" : "Post to Community"}
+            {loading ? t('postingBtn') : t('postToCommunity')}
           </button>
         </form>
       </motion.div>
@@ -384,7 +389,9 @@ function NewPostModal({ user, onCreated, onClose }: { user: StoredUser; onCreate
 
 /* ── main page ──────────────────────────────────────────────── */
 export default function CommunityPage() {
+  const { t, i18n } = useTranslation();
   const router = useRouter();
+  const currentLanguage = useStore((state) => state.currentLanguage);
   const [user] = useState<StoredUser | null>(() => {
     if (typeof window === "undefined") return null;
     try {
@@ -397,7 +404,13 @@ export default function CommunityPage() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
-  const [activeFilter, setActiveFilter] = useState<string>("All");
+  const [activeFilter, setActiveFilter] = useState<string>("all");
+
+  useEffect(() => {
+    if (currentLanguage) {
+      i18n.changeLanguage(currentLanguage);
+    }
+  }, [currentLanguage, i18n]);
 
   useEffect(() => {
     if (!user) router.push("/landing");
@@ -425,9 +438,9 @@ export default function CommunityPage() {
       });
   }
 
-  const filteredPosts = activeFilter === "All"
+  const filteredPosts = activeFilter === "all"
     ? posts
-    : posts.filter((p) => p.tags?.toLowerCase().includes(activeFilter.toLowerCase()));
+    : posts.filter((p) => p.tags?.split(',').map((x) => x.trim()).includes(activeFilter));
 
   if (!user) return null;
 
@@ -443,21 +456,21 @@ export default function CommunityPage() {
             <ArrowLeft className="w-5 h-5 text-gray-600" />
           </button>
           <div>
-            <h1 className="text-xl font-extrabold text-gray-900">Farmer Community</h1>
-            <p className="text-xs text-gray-500">Share, learn and grow together 🌱</p>
+            <h1 className="text-xl font-extrabold text-gray-900">{t('farmerCommunity')}</h1>
+            <p className="text-xs text-gray-500">{t('shareLearnGrow')} 🌱</p>
           </div>
           <button
             onClick={() => setShowModal(true)}
             className="ml-auto flex items-center gap-2 px-4 py-2 rounded-xl text-white text-sm font-semibold shadow-lg hover:opacity-90 active:scale-95 transition-all"
             style={{ background: "linear-gradient(135deg,#10b981,#06b6d4)" }}
           >
-            <Plus className="w-4 h-4" /> New Post
+            <Plus className="w-4 h-4" /> {t('newPost')}
           </button>
         </div>
 
         {/* filter chips */}
         <div className="flex gap-2 overflow-x-auto pb-2 mb-5 no-scrollbar">
-          {["All", ...TAG_OPTIONS.map((t) => t.label)].map((f) => (
+          {['all', ...TAG_OPTIONS.map((tag) => tag.label)].map((f) => (
             <button
               key={f}
               onClick={() => setActiveFilter(f)}
@@ -468,7 +481,7 @@ export default function CommunityPage() {
               }`}
               style={activeFilter === f ? { background: "linear-gradient(135deg,#10b981,#06b6d4)" } : {}}
             >
-              {f}
+              {f === 'all' ? t('all') : t(`tag_${f.toLowerCase()}`)}
             </button>
           ))}
         </div>
@@ -483,13 +496,13 @@ export default function CommunityPage() {
         ) : filteredPosts.length === 0 ? (
           <div className="text-center py-20">
             <div className="text-5xl mb-4">🌾</div>
-            <p className="text-gray-500 font-medium">No posts yet — be the first to share!</p>
+            <p className="text-gray-500 font-medium">{t('noPostsYet')}</p>
             <button
               onClick={() => setShowModal(true)}
               className="mt-5 px-6 py-2.5 rounded-xl text-white font-semibold"
               style={{ background: "linear-gradient(135deg,#10b981,#06b6d4)" }}
             >
-              Create first post
+              {t('createFirstPost')}
             </button>
           </div>
         ) : (

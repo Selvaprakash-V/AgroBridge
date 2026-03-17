@@ -1,18 +1,28 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { useTranslation } from "react-i18next";
+import { useStore } from "@/store/useStore";
 
 export default function RegisterPage() {
+  const { t, i18n } = useTranslation();
   const router = useRouter();
+  const currentLanguage = useStore((state) => state.currentLanguage);
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (currentLanguage) {
+      i18n.changeLanguage(currentLanguage);
+    }
+  }, [currentLanguage, i18n]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -26,13 +36,13 @@ export default function RegisterPage() {
       });
       const data = await res.json();
       if (!res.ok) {
-        setError(data.error || "Registration failed");
+        setError(data.error || t('registrationFailed'));
       } else {
         setSuccess(true);
         setTimeout(() => router.push("/login"), 1400);
       }
     } catch {
-      setError("Network error");
+      setError(t('networkError'));
     } finally {
       setLoading(false);
     }
@@ -61,7 +71,7 @@ export default function RegisterPage() {
             <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-3xl mb-3 shadow-lg"
                  style={{ background: "linear-gradient(135deg,#10b981,#06b6d4)" }}>🌱</div>
             <h1 className="text-xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-emerald-700 to-cyan-600">AgroBridge</h1>
-            <p className="text-sm text-gray-500 mt-1">Create your free account</p>
+            <p className="text-sm text-gray-500 mt-1">{t('createFreeAccount')}</p>
           </div>
 
           {error && (
@@ -74,35 +84,35 @@ export default function RegisterPage() {
           {success && (
             <motion.div initial={{ opacity:0, scale:0.9 }} animate={{ opacity:1, scale:1 }}
               className="mb-4 px-4 py-3 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-700 text-sm text-center">
-              🎉 Account created! Redirecting to sign in…
+              🎉 {t('accountCreated')}
             </motion.div>
           )}
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-1.5">Email</label>
+              <label className="block text-sm font-semibold text-gray-700 mb-1.5">{t('emailLabel')}</label>
               <input
                 type="email" required
                 value={email} onChange={(e) => setEmail(e.target.value)}
-                placeholder="you@example.com"
+                placeholder={t('emailPlaceholder')}
                 className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white/80 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-400 transition"
               />
             </div>
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-1.5">Username</label>
+              <label className="block text-sm font-semibold text-gray-700 mb-1.5">{t('usernameLabel')}</label>
               <input
                 type="text" required
                 value={username} onChange={(e) => setUsername(e.target.value)}
-                placeholder="farmerhero123"
+                placeholder={t('usernamePlaceholder')}
                 className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white/80 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-400 transition"
               />
             </div>
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-1.5">Password</label>
+              <label className="block text-sm font-semibold text-gray-700 mb-1.5">{t('passwordLabel')}</label>
               <input
                 type="password" required
                 value={password} onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
+                placeholder={t('passwordPlaceholder')}
                 className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white/80 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-400 transition"
               />
             </div>
@@ -111,16 +121,16 @@ export default function RegisterPage() {
               className="w-full py-3 rounded-xl text-white font-semibold text-sm shadow-lg hover:opacity-90 active:scale-95 transition-all disabled:opacity-60"
               style={{ background: "linear-gradient(135deg,#10b981,#06b6d4)" }}
             >
-              {loading ? "Creating account…" : "Create account →"}
+              {loading ? t('creatingAccount') : `${t('createAccountCta')} →`}
             </button>
           </form>
 
           <p className="mt-6 text-center text-sm text-gray-500">
-            Already have an account?{" "}
-            <Link href="/login" className="font-semibold text-emerald-600 hover:underline">Sign in</Link>
+            {t('alreadyHaveAccount')}{" "}
+            <Link href="/login" className="font-semibold text-emerald-600 hover:underline">{t('signInCta')}</Link>
           </p>
           <p className="mt-2 text-center text-xs text-gray-400">
-            <Link href="/landing" className="hover:underline">← Back to home</Link>
+            <Link href="/landing" className="hover:underline">← {t('backToHome')}</Link>
           </p>
         </div>
       </motion.div>

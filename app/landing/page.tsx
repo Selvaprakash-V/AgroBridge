@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { LANGUAGES } from "@/lib/languages";
 import { useStore } from "@/store/useStore";
 import { Globe } from "lucide-react";
@@ -30,73 +31,9 @@ function AnimatedCounter({ target, suffix = "" }: { target: number; suffix?: str
 }
 
 /* ── data ──────────────────────────────────────────────────── */
-const features = [
-  {
-    emoji: "🌿",
-    title: "Crop Diagnosis",
-    desc: "Upload a plant photo and get instant AI-powered disease detection with treatment recommendations.",
-    gradient: "from-emerald-400 to-green-600",
-    bg: "bg-emerald-50",
-    border: "border-emerald-200",
-  },
-  {
-    emoji: "⛅",
-    title: "Live Weather",
-    desc: "Hyper-local forecasts, rainfall predictions, and optimal sowing/harvest windows for your region.",
-    gradient: "from-sky-400 to-cyan-600",
-    bg: "bg-sky-50",
-    border: "border-sky-200",
-  },
-  {
-    emoji: "💬",
-    title: "Multilingual AI Chat",
-    desc: "Ask farming questions in your native language and get instant, expert-level answers.",
-    gradient: "from-violet-400 to-purple-600",
-    bg: "bg-violet-50",
-    border: "border-violet-200",
-  },
-  {
-    emoji: "📅",
-    title: "Crop Calendar",
-    desc: "Smart almanac tailored to your soil type and climate — never miss a critical farming date.",
-    gradient: "from-amber-400 to-orange-500",
-    bg: "bg-amber-50",
-    border: "border-amber-200",
-  },
-  {
-    emoji: "🧠",
-    title: "AI Crop Insights",
-    desc: "Get personalised nutrient, pest, and irrigation insights drawn from millions of farming records.",
-    gradient: "from-teal-400 to-emerald-600",
-    bg: "bg-teal-50",
-    border: "border-teal-200",
-  },
-  {
-    emoji: "📸",
-    title: "Plant History",
-    desc: "Track every scan, diagnosis, and recommendation in a searchable personal history log.",
-    gradient: "from-rose-400 to-pink-600",
-    bg: "bg-rose-50",
-    border: "border-rose-200",
-  },
-];
-
-const steps = [
-  { n: "01", emoji: "✍️", title: "Create your account", desc: "Register for free — just an email, username, and password." },
-  { n: "02", emoji: "🌏", title: "Pick your language", desc: "Choose from 10+ regional languages for a fully localised experience." },
-  { n: "03", emoji: "📷", title: "Scan your crops", desc: "Snap a photo of any plant and let our AI diagnose it in seconds." },
-  { n: "04", emoji: "🌱", title: "Grow better", desc: "Follow AI recommendations, track progress, and boost your harvest." },
-];
-
-const stats = [
-  { value: 10, suffix: "+", label: "Languages" },
-  { value: 6,  suffix: "",  label: "AI Features" },
-  { value: 50, suffix: "+", label: "Crop Types" },
-  { value: 99, suffix: "%", label: "Free to use" },
-];
-
 /* ── page ──────────────────────────────────────────────────── */
 export default function LandingPage() {
+  const { t, i18n } = useTranslation();
   const currentLanguage = useStore((s) => s.currentLanguage);
   const setLanguage = useStore((s) => s.setLanguage);
   const [langOpen, setLangOpen] = useState(false);
@@ -110,6 +47,35 @@ export default function LandingPage() {
     document.addEventListener("mousedown", handle);
     return () => document.removeEventListener("mousedown", handle);
   }, []);
+
+  useEffect(() => {
+    if (currentLanguage) {
+      i18n.changeLanguage(currentLanguage);
+    }
+  }, [currentLanguage, i18n]);
+
+  const features = [
+    { emoji: "🌿", title: t('feature_cd_title'), desc: t('feature_cd_desc'), gradient: "from-emerald-400 to-green-600", bg: "bg-emerald-50", border: "border-emerald-200" },
+    { emoji: "⛅", title: t('feature_weather_title'), desc: t('feature_weather_desc'), gradient: "from-sky-400 to-cyan-600", bg: "bg-sky-50", border: "border-sky-200" },
+    { emoji: "💬", title: t('feature_chat_title'), desc: t('feature_chat_desc'), gradient: "from-violet-400 to-purple-600", bg: "bg-violet-50", border: "border-violet-200" },
+    { emoji: "📅", title: t('feature_calendar_title'), desc: t('feature_calendar_desc'), gradient: "from-amber-400 to-orange-500", bg: "bg-amber-50", border: "border-amber-200" },
+    { emoji: "🧠", title: t('feature_insights_title'), desc: t('feature_insights_desc'), gradient: "from-teal-400 to-emerald-600", bg: "bg-teal-50", border: "border-teal-200" },
+    { emoji: "📸", title: t('feature_history_title'), desc: t('feature_history_desc'), gradient: "from-rose-400 to-pink-600", bg: "bg-rose-50", border: "border-rose-200" },
+  ];
+
+  const steps = [
+    { n: "01", emoji: "✍️", title: t('step1_title'), desc: t('step1_desc') },
+    { n: "02", emoji: "🌏", title: t('step2_title'), desc: t('step2_desc') },
+    { n: "03", emoji: "📷", title: t('step3_title'), desc: t('step3_desc') },
+    { n: "04", emoji: "🌱", title: t('step4_title'), desc: t('step4_desc') },
+  ];
+
+  const stats = [
+    { value: 10, suffix: "+", label: t('stat_languages') },
+    { value: 6,  suffix: "",  label: t('stat_features') },
+    { value: 50, suffix: "+", label: t('stat_crops') },
+    { value: 99, suffix: "%", label: t('stat_free') },
+  ];
 
   const activeLang = LANGUAGES.find((l) => l.code === currentLanguage) ?? LANGUAGES[0];
 
@@ -193,10 +159,10 @@ export default function LandingPage() {
               </AnimatePresence>
             </div>
 
-            <Link href="/login" className="px-4 py-2 text-sm font-semibold text-gray-700 rounded-xl hover:bg-white/60 transition-all">Sign in</Link>
+            <Link href="/login" className="px-4 py-2 text-sm font-semibold text-gray-700 rounded-xl hover:bg-white/60 transition-all">{t('signInBtn')}</Link>
             <Link href="/register" className="px-4 py-2 text-sm font-semibold text-white rounded-xl shadow-md hover:opacity-90 transition-all"
                   style={{ background: "linear-gradient(135deg,#10b981,#06b6d4)" }}>
-              Get started
+              {t('getStarted')}
             </Link>
           </div>
         </div>
@@ -206,32 +172,31 @@ export default function LandingPage() {
       <section className="relative z-10 text-center pt-20 pb-24 px-4">
         <motion.div {...fadeUp(0)}>
           <span className="inline-block px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide mb-5 text-emerald-700 bg-emerald-100 border border-emerald-200">
-            🌱 AI-Powered Farming Assistant
+            🌱 {t('heroTagline')}
           </span>
         </motion.div>
 
         <motion.h1 {...fadeUp(0.1)} className="text-5xl md:text-7xl font-extrabold leading-tight mb-5">
           <span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-700 via-green-600 to-cyan-600">
-            Farm Smarter
+            {t('heroLine1')}
           </span>{" "}
           <br className="hidden md:block" />
-          <span className="text-gray-800">with AI at your side</span>
+          <span className="text-gray-800">{t('heroLine2')}</span>
         </motion.h1>
 
         <motion.p {...fadeUp(0.2)} className="max-w-2xl mx-auto text-lg text-gray-600 mb-8">
-          AgroBridge gives every farmer — regardless of language or region — instant access to crop diagnostics,
-          weather intelligence, and expert planting advice. All powered by AI. All free.
+          {t('heroDesc')}
         </motion.p>
 
         <motion.div {...fadeUp(0.3)} className="flex flex-wrap justify-center gap-4">
           <Link href="/register"
                 className="px-7 py-3.5 rounded-2xl text-white font-semibold text-base shadow-xl hover:scale-105 active:scale-95 transition-transform"
                 style={{ background: "linear-gradient(135deg,#10b981,#06b6d4)" }}>
-            Create free account →
+            {t('createFreeAccountBtn')} →
           </Link>
           <Link href="/login"
                 className="px-7 py-3.5 rounded-2xl text-gray-800 font-semibold text-base bg-white/70 border border-white/60 backdrop-blur-md shadow-md hover:scale-105 active:scale-95 transition-transform">
-            Sign in
+            {t('signInBtn')}
           </Link>
         </motion.div>
 
@@ -262,8 +227,8 @@ export default function LandingPage() {
       {/* ─────────── FEATURES ─────────── */}
       <section className="relative z-10 py-20 px-4">
         <motion.div {...fadeUp(0)} className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-3">Everything a farmer needs</h2>
-          <p className="text-gray-500 max-w-xl mx-auto">Six powerful tools bundled in one lightweight app — designed for the field, not the boardroom.</p>
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-3">{t('everythingFarmerNeeds')}</h2>
+          <p className="text-gray-500 max-w-xl mx-auto">{t('everythingFarmerNeedsSub')}</p>
         </motion.div>
 
         <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -284,8 +249,8 @@ export default function LandingPage() {
       {/* ─────────── HOW IT WORKS ─────────── */}
       <section className="relative z-10 py-20 px-4">
         <motion.div {...fadeUp(0)} className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-3">Up and running in minutes</h2>
-          <p className="text-gray-500 max-w-xl mx-auto">No training needed. Just sign up, pick your language, and start scanning.</p>
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-3">{t('upAndRunning')}</h2>
+          <p className="text-gray-500 max-w-xl mx-auto">{t('howItWorksSub')}</p>
         </motion.div>
 
         <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-6">
@@ -311,9 +276,9 @@ export default function LandingPage() {
       <section className="relative z-10 py-16 px-4">
         <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
           {[
-            { emoji:"🌍", title:"Built for India", desc:"Localised for Indian languages, crops, soil types, and climate zones.", grad:"from-orange-400 to-amber-500" },
-            { emoji:"🔒", title:"Privacy first", desc:"Your data never leaves your account. No ads, no tracking, no reselling.", grad:"from-violet-500 to-purple-600" },
-            { emoji:"⚡", title:"Offline friendly", desc:"Lightweight interfaces designed for low-bandwidth rural connectivity.", grad:"from-emerald-500 to-teal-600" },
+            { emoji:"🌍", title:t('builtForIndia'), desc:t('builtForIndiaDesc'), grad:"from-orange-400 to-amber-500" },
+            { emoji:"🔒", title:t('privacyFirst'), desc:t('privacyFirstDesc'), grad:"from-violet-500 to-purple-600" },
+            { emoji:"⚡", title:t('offlineFriendly'), desc:t('offlineFriendlyDesc'), grad:"from-emerald-500 to-teal-600" },
           ].map((c, i) => (
             <motion.div key={i} {...fadeUp(i * 0.12)}
               whileHover={{ scale: 1.03 }}
@@ -334,20 +299,20 @@ export default function LandingPage() {
           style={{ background: "linear-gradient(135deg,rgba(16,185,129,0.18),rgba(6,182,212,0.12))" }}>
           <div className="text-5xl mb-5">🌾</div>
           <h2 className="text-3xl md:text-4xl font-extrabold text-gray-800 mb-4">
-            Ready to grow smarter?
+            {t('readyToGrow')}
           </h2>
           <p className="text-gray-600 mb-8 max-w-md mx-auto">
-            Join farmers already using AgroBridge to diagnose crops, plan harvests, and boost yields — for free.
+            {t('readyToGrowDesc')}
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <Link href="/register"
                   className="px-8 py-3.5 rounded-2xl text-white font-semibold shadow-xl hover:scale-105 active:scale-95 transition-transform"
                   style={{ background: "linear-gradient(135deg,#10b981,#06b6d4)" }}>
-              Create free account →
+              {t('createFreeAccountBtn')} →
             </Link>
             <Link href="/login"
                   className="px-8 py-3.5 rounded-2xl text-gray-800 font-semibold bg-white/70 border border-white/60 backdrop-blur-md shadow-md hover:scale-105 active:scale-95 transition-transform">
-              Already have an account
+              {t('alreadyHaveAccountBtn')}
             </Link>
           </div>
         </motion.div>

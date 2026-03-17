@@ -49,7 +49,7 @@ export default function Dashboard() {
         {/* Section divider */}
         <div className="flex items-center gap-3 mb-4 md:mb-5">
           <div className="flex-1 h-px bg-gradient-to-r from-transparent via-emerald-300/70 to-transparent" />
-          <span className="text-[11px] font-bold tracking-widest uppercase text-emerald-700 px-2">Features</span>
+          <span className="text-[11px] font-bold tracking-widest uppercase text-emerald-700 px-2">{t('featuresLabel')}</span>
           <div className="flex-1 h-px bg-gradient-to-r from-transparent via-emerald-300/70 to-transparent" />
         </div>
 
@@ -65,7 +65,7 @@ export default function Dashboard() {
             className="group rounded-3xl md:rounded-4xl shadow-md hover:shadow-2xl border border-white/40 p-5 md:p-7 h-48 md:h-64 transition-all duration-300 transform-gpu hover:scale-[1.03] text-gray-800 relative overflow-hidden cursor-pointer"
             style={{ background: 'linear-gradient(135deg, rgba(168, 85, 247, 0.32) 0%, rgba(192, 132, 252, 0.32) 50%, rgba(216, 180, 254, 0.28) 100%)' }}
           >
-            <span className="absolute top-3 left-3 z-20 text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-purple-100 text-purple-700 tracking-widest uppercase">AI</span>
+            <span className="absolute top-3 left-3 z-20 text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-purple-100 text-purple-700 tracking-widest uppercase">{t('badge_ai')}</span>
             <div className="absolute top-3 right-3 z-20">
               <AudioButton text={`${t('speak')}. ${t('askByVoice')}`} className="bg-white/40 hover:bg-white/60 text-gray-800" />
             </div>
@@ -93,7 +93,7 @@ export default function Dashboard() {
             className="group rounded-3xl md:rounded-4xl shadow-md hover:shadow-2xl border border-white/40 p-5 md:p-7 h-48 md:h-64 transition-all duration-300 transform-gpu hover:scale-[1.03] text-gray-800 relative overflow-hidden cursor-pointer"
             style={{ background: 'linear-gradient(135deg, rgba(34, 197, 94, 0.32) 0%, rgba(74, 222, 128, 0.32) 50%, rgba(134, 239, 172, 0.28) 100%)' }}
           >
-            <span className="absolute top-3 left-3 z-20 text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-green-100 text-green-700 tracking-widest uppercase">Chat</span>
+            <span className="absolute top-3 left-3 z-20 text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-green-100 text-green-700 tracking-widest uppercase">{t('badge_chat')}</span>
             <div className="absolute top-3 right-3 z-20">
               <AudioButton text={`${t('chat')}. ${t('typeToAsk')}`} className="bg-white/40 hover:bg-white/60 text-gray-800" />
             </div>
@@ -121,7 +121,7 @@ export default function Dashboard() {
             className="group rounded-3xl md:rounded-4xl shadow-md hover:shadow-2xl border border-white/40 p-5 md:p-7 h-48 md:h-64 transition-all duration-300 transform-gpu hover:scale-[1.03] text-gray-800 relative overflow-hidden cursor-pointer"
             style={{ background: 'linear-gradient(135deg, rgba(249, 115, 22, 0.32) 0%, rgba(251, 146, 60, 0.32) 50%, rgba(251, 191, 36, 0.28) 100%)' }}
           >
-            <span className="absolute top-3 left-3 z-20 text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-orange-100 text-orange-700 tracking-widest uppercase">Scan</span>
+            <span className="absolute top-3 left-3 z-20 text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-orange-100 text-orange-700 tracking-widest uppercase">{t('badge_scan')}</span>
             <div className="absolute top-3 right-3 z-20">
               <AudioButton text={`${t('uploadPhoto')}. ${t('checkCropDisease')}`} className="bg-white/40 hover:bg-white/60 text-gray-800" />
             </div>
@@ -149,7 +149,7 @@ export default function Dashboard() {
             className="group rounded-3xl md:rounded-4xl shadow-md hover:shadow-2xl border border-white/40 p-5 md:p-7 h-48 md:h-64 transition-all duration-300 transform-gpu hover:scale-[1.03] text-gray-800 relative overflow-hidden cursor-pointer"
             style={{ background: 'linear-gradient(135deg, rgba(254, 215, 170, 0.48) 0%, rgba(253, 186, 116, 0.45) 50%, rgba(251, 146, 60, 0.42) 100%)' }}
           >
-            <span className="absolute top-3 left-3 z-20 text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-700 tracking-widest uppercase">Learn</span>
+            <span className="absolute top-3 left-3 z-20 text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-700 tracking-widest uppercase">{t('badge_learn')}</span>
             <div className="absolute top-3 right-3 z-20">
               <AudioButton text={`${t('learn')}. ${t('listenAndLearn')}`} className="bg-white/40 hover:bg-white/60 text-gray-800" />
             </div>
@@ -177,7 +177,7 @@ export default function Dashboard() {
             className="group rounded-3xl md:rounded-4xl shadow-md hover:shadow-2xl border border-white/40 p-5 md:p-7 h-48 md:h-64 transition-all duration-300 transform-gpu hover:scale-[1.03] text-gray-800 relative overflow-hidden cursor-pointer"
             style={{ background: 'linear-gradient(135deg, rgba(20, 184, 166, 0.32) 0%, rgba(45, 212, 191, 0.32) 50%, rgba(94, 234, 212, 0.28) 100%)' }}
           >
-            <span className="absolute top-3 left-3 z-20 text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-teal-100 text-teal-700 tracking-widest uppercase">Health</span>
+            <span className="absolute top-3 left-3 z-20 text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-teal-100 text-teal-700 tracking-widest uppercase">{t('badge_health')}</span>
             <div className="absolute top-3 right-3 z-20">
               <AudioButton text={`${t('cropDoctor')}. ${t('cropDoctorDesc')}`} className="bg-white/40 hover:bg-white/60 text-gray-800" />
             </div>
@@ -205,7 +205,7 @@ export default function Dashboard() {
             className="group rounded-3xl md:rounded-4xl shadow-md hover:shadow-2xl border border-white/40 p-5 md:p-7 h-48 md:h-64 transition-all duration-300 transform-gpu hover:scale-[1.03] text-gray-800 relative overflow-hidden cursor-pointer"
             style={{ background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.32) 0%, rgba(129, 140, 248, 0.32) 50%, rgba(165, 180, 252, 0.28) 100%)' }}
           >
-            <span className="absolute top-3 left-3 z-20 text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-indigo-100 text-indigo-700 tracking-widest uppercase">Plan</span>
+            <span className="absolute top-3 left-3 z-20 text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-indigo-100 text-indigo-700 tracking-widest uppercase">{t('badge_plan')}</span>
             <div className="absolute top-3 right-3 z-20">
               <AudioButton text={`${t('almanac')}. ${t('almanacDesc')}`} className="bg-white/40 hover:bg-white/60 text-gray-800" />
             </div>
@@ -233,7 +233,7 @@ export default function Dashboard() {
             className="group rounded-3xl md:rounded-4xl shadow-md hover:shadow-2xl border border-white/40 p-5 md:p-7 h-48 md:h-64 transition-all duration-300 transform-gpu hover:scale-[1.03] text-gray-800 relative overflow-hidden cursor-pointer"
             style={{ background: 'linear-gradient(135deg, rgba(244, 63, 94, 0.32) 0%, rgba(251, 113, 133, 0.32) 50%, rgba(253, 164, 175, 0.28) 100%)' }}
           >
-            <span className="absolute top-3 left-3 z-20 text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-rose-100 text-rose-700 tracking-widest uppercase">Data</span>
+            <span className="absolute top-3 left-3 z-20 text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-rose-100 text-rose-700 tracking-widest uppercase">{t('badge_data')}</span>
             <div className="absolute top-3 right-3 z-20">
               <AudioButton text={`${t('farmInsights')}. ${t('farmInsightsDesc')}`} className="bg-white/40 hover:bg-white/60 text-gray-800" />
             </div>
@@ -261,7 +261,7 @@ export default function Dashboard() {
             className="group rounded-3xl md:rounded-4xl shadow-md hover:shadow-2xl border border-white/40 p-5 md:p-7 h-48 md:h-64 transition-all duration-300 transform-gpu hover:scale-[1.03] text-gray-800 relative overflow-hidden cursor-pointer"
             style={{ background: 'linear-gradient(135deg, rgba(245, 158, 11, 0.32) 0%, rgba(251, 191, 36, 0.32) 50%, rgba(253, 224, 71, 0.28) 100%)' }}
           >
-            <span className="absolute top-3 left-3 z-20 text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-yellow-100 text-yellow-700 tracking-widest uppercase">Gov</span>
+            <span className="absolute top-3 left-3 z-20 text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-yellow-100 text-yellow-700 tracking-widest uppercase">{t('badge_gov')}</span>
             <div className="absolute top-3 right-3 z-20">
               <AudioButton text={`${t('govSchemes')}. ${t('govSchemesDesc')}`} className="bg-white/40 hover:bg-white/60 text-gray-800" />
             </div>
@@ -289,7 +289,7 @@ export default function Dashboard() {
             className="group rounded-3xl md:rounded-4xl shadow-md hover:shadow-2xl border border-white/40 p-5 md:p-7 h-48 md:h-64 transition-all duration-300 transform-gpu hover:scale-[1.015] text-gray-800 relative overflow-hidden cursor-pointer col-span-2"
             style={{ background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.28) 0%, rgba(6, 182, 212, 0.28) 50%, rgba(59, 130, 246, 0.22) 100%)' }}
           >
-            <span className="absolute top-3 left-3 z-20 text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-700 tracking-widest uppercase">Community</span>
+            <span className="absolute top-3 left-3 z-20 text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-700 tracking-widest uppercase">{t('badge_community')}</span>
             <div className="absolute top-3 right-3 z-20">
               <AudioButton text={`${t('community')}. ${t('communityDesc')}`} className="bg-white/40 hover:bg-white/60 text-gray-800" />
             </div>

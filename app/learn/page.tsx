@@ -9,39 +9,16 @@ import { speakNative } from "@/lib/audio";
 import { getLanguageByCode } from "@/lib/languages";
 import FarmingBackground from "@/components/FarmingBackground";
 
-// Farming tips in multiple languages
-const farmingTips = {
-  'en-IN': [
-    { title: "Soil Testing", content: "Test your soil before planting. This helps determine pH levels and nutrient content, ensuring you use the right fertilizers for better crop yield." },
-    { title: "Crop Rotation", content: "Practice crop rotation to maintain soil health. Rotating different crops prevents soil depletion and reduces pest and disease buildup." },
-    { title: "Water Management", content: "Use drip irrigation to save water. Drip systems deliver water directly to plant roots, reducing waste and improving water efficiency by up to 60%." },
-    { title: "Organic Fertilizers", content: "Use compost and green manure. Organic fertilizers improve soil structure, increase water retention, and provide slow-release nutrients." },
-    { title: "Pest Control", content: "Try integrated pest management. Combine biological, cultural, and chemical methods to control pests while minimizing environmental impact." },
-    { title: "Seed Selection", content: "Choose certified seeds for better yield. Quality seeds are disease-free, have higher germination rates, and produce uniform crops." },
-    { title: "Weather Monitoring", content: "Check weather forecasts regularly. Planning farm activities according to weather helps optimize planting, irrigation, and harvesting times." },
-    { title: "Mulching Benefits", content: "Apply mulch to conserve moisture. Mulching reduces evaporation, controls weeds, and maintains consistent soil temperature." }
-  ],
-  'hi-IN': [
-    { title: "मिट्टी परीक्षण", content: "बुवाई से पहले अपनी मिट्टी की जांच करें। यह pH स्तर और पोषक तत्वों की मात्रा निर्धारित करने में मदद करता है, जिससे बेहतर फसल के लिए सही उर्वरक का उपयोग सुनिश्चित होता है।" },
-    { title: "फसल चक्र", content: "मिट्टी के स्वास्थ्य को बनाए रखने के लिए फसल चक्र का अभ्यास करें। विभिन्न फसलों को घुमाने से मिट्टी की कमी रोकी जा सकती है और कीट और रोग का निर्माण कम होता है।" },
-    { title: "जल प्रबंधन", content: "पानी बचाने के लिए ड्रिप सिंचाई का उपयोग करें। ड्रिप सिस्टम सीधे पौधे की जड़ों तक पानी पहुंचाता है, बर्बादी को कम करता है और 60% तक पानी की दक्षता में सुधार करता है।" },
-    { title: "जैविक उर्वरक", content: "खाद और हरी खाद का उपयोग करें। जैविक उर्वरक मिट्टी की संरचना में सुधार करते हैं, पानी की अवधारण बढ़ाते हैं और धीमी गति से पोषक तत्व प्रदान करते हैं।" },
-    { title: "कीट नियंत्रण", content: "एकीकृत कीट प्रबंधन का प्रयास करें। पर्यावरणीय प्रभाव को कम करते हुए कीटों को नियंत्रित करने के लिए जैविक, सांस्कृतिक और रासायनिक तरीकों को मिलाएं।" },
-    { title: "बीज चयन", content: "बेहतर उपज के लिए प्रमाणित बीज चुनें। गुणवत्ता वाले बीज रोग मुक्त होते हैं, उच्च अंकुरण दर रखते हैं और समान फसलें पैदा करते हैं।" },
-    { title: "मौसम की निगरानी", content: "नियमित रूप से मौसम के पूर्वानुमान की जांच करें। मौसम के अनुसार खेती की गतिविधियों की योजना बनाने से बुवाई, सिंचाई और कटाई के समय को अनुकूलित करने में मदद मिलती है।" },
-    { title: "मल्चिंग के फायदे", content: "नमी बचाने के लिए मल्च लगाएं। मल्चिंग वाष्पीकरण को कम करता है, खरपतवार को नियंत्रित करता है और मिट्टी का तापमान सुसंगत बनाए रखता है।" }
-  ],
-  'bn-IN': [
-    { title: "মাটি পরীক্ষা", content: "রোপণের আগে আপনার মাটি পরীক্ষা করুন। এটি pH মাত্রা এবং পুষ্টি উপাদান নির্ধারণে সাহায্য করে, যা ভাল ফসলের জন্য সঠিক সার ব্যবহার নিশ্চিত করে।" },
-    { title: "ফসল চক্র", content: "মাটির স্বাস্থ্য বজায় রাখতে ফসল ঘূর্ণন অনুশীলন করুন। বিভিন্ন ফসল ঘোরানো মাটির ক্ষয় রোধ করে এবং কীটপতঙ্গ ও রোগের বিকাশ হ্রাস করে।" },
-    { title: "জল ব্যবস্থাপনা", content: "জল সংরক্ষণের জন্য ড্রিপ সেচ ব্যবহার করুন। ড্রিপ সিস্টেম সরাসরি গাছের শিকড়ে জল সরবরাহ করে, অপচয় হ্রাস করে এবং 60% পর্যন্ত জল দক্ষতা উন্নত করে।" },
-    { title: "জৈব সার", content: "কম্পোস্ট এবং সবুজ সার ব্যবহার করুন। জৈব সার মাটির গঠন উন্নত করে, জল ধারণ ক্ষমতা বৃদ্ধি করে এবং ধীরে ধীরে পুষ্টি সরবরাহ করে।" },
-    { title: "কীটপতঙ্গ নিয়ন্ত্রণ", content: "সমন্বিত কীটপতঙ্গ ব্যবস্থাপনা চেষ্টা করুন। পরিবেশগত প্রভাব কমিয়ে কীটপতঙ্গ নিয়ন্ত্রণের জন্য জৈবিক, সাংস্কৃতিক এবং রাসায়নিক পদ্ধতি একত্রিত করুন।" },
-    { title: "বীজ নির্বাচন", content: "ভাল ফলনের জন্য প্রত্যয়িত বীজ চয়ন করুন। গুণমানের বীজ রোগমুক্ত, উচ্চ অঙ্কুরোদগম হার থাকে এবং অভিন্ন ফসল উত্পাদন করে।" },
-    { title: "আবহাওয়া পর্যবেক্ষণ", content: "নিয়মিত আবহাওয়ার পূর্বাভাস পরীক্ষা করুন। আবহাওয়া অনুযায়ী কৃষি কার্যক্রম পরিকল্পনা করা রোপণ, সেচ এবং ফসল কাটার সময় অনুকূল করতে সাহায্য করে।" },
-    { title: "মালচিং সুবিধা", content: "আর্দ্রতা সংরক্ষণের জন্য মালচ প্রয়োগ করুন। মালচিং বাষ্পীভবন হ্রাস করে, আগাছা নিয়ন্ত্রণ করে এবং মাটির তাপমাত্রা সামঞ্জস্যপূর্ণ রাখে।" }
-  ]
-};
+const tipIds = [
+  'soilTesting',
+  'cropRotation',
+  'waterManagement',
+  'organicFertilizers',
+  'pestControl',
+  'seedSelection',
+  'weatherMonitoring',
+  'mulchingBenefits',
+];
 
 export default function LearnPage() {
   const { t, i18n } = useTranslation();
@@ -59,7 +36,10 @@ export default function LearnPage() {
     }
   }, [currentLanguage, i18n]);
 
-  const tips = farmingTips[currentLanguage as keyof typeof farmingTips] || farmingTips['en-IN'];
+  const tips = tipIds.map((id) => ({
+    title: t(`learnTips.${id}.title`),
+    content: t(`learnTips.${id}.content`),
+  }));
 
   const handlePlayTip = (index: number) => {
     if (isPlaying && selectedTip === index) {
