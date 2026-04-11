@@ -1,4 +1,5 @@
-"use client";
+
+import React from "react";
 
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
@@ -280,31 +281,40 @@ export default function Dashboard() {
             </div>
           </div>
 
-          {/* Community Card - spans full width */}
-          <div
-            role="button"
-            tabIndex={0}
-            onClick={() => navigateTo("/community")}
-            onKeyDown={(e) => e.key === 'Enter' && navigateTo("/community")}
-            className="group rounded-3xl md:rounded-4xl shadow-md hover:shadow-2xl border border-white/40 p-5 md:p-7 h-48 md:h-64 transition-all duration-300 transform-gpu hover:scale-[1.015] text-gray-800 relative overflow-hidden cursor-pointer col-span-2"
-            style={{ background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.28) 0%, rgba(6, 182, 212, 0.28) 50%, rgba(59, 130, 246, 0.22) 100%)' }}
-          >
-            <span className="absolute top-3 left-3 z-20 text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-700 tracking-widest uppercase">{t('badge_community')}</span>
-            <div className="absolute top-3 right-3 z-20">
-              <AudioButton text={`${t('community')}. ${t('communityDesc')}`} className="bg-white/40 hover:bg-white/60 text-gray-800" />
-            </div>
-            <div className="absolute -bottom-5 -right-5 text-[88px] opacity-[0.12] pointer-events-none select-none rotate-12 z-0">👥</div>
-            <div className="absolute inset-0 bg-gradient-to-br from-emerald-300/15 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            <div className="relative z-10 h-full flex flex-col items-center justify-center">
-              <div className="w-14 h-14 md:w-[72px] md:h-[72px] rounded-2xl flex items-center justify-center mb-3 md:mb-4 shadow-lg transition-all duration-300 group-hover:scale-110 group-hover:shadow-emerald-300/50 group-hover:shadow-xl"
-                style={{ background: 'linear-gradient(135deg, #065f46, #10b981)' }}>
-                <Users2 className="w-7 h-7 md:w-9 md:h-9 text-white drop-shadow" />
+          {/* Community (left) and What's Happening Nearby (right) */}
+          <div className="col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+            {/* Community Card (left) */}
+            <div
+              role="button"
+              tabIndex={0}
+              onClick={() => navigateTo("/community")}
+              onKeyDown={(e) => e.key === 'Enter' && navigateTo("/community")}
+              className="group rounded-3xl md:rounded-4xl shadow-md hover:shadow-2xl border border-white/40 p-5 md:p-7 h-48 md:h-64 transition-all duration-300 transform-gpu hover:scale-[1.015] text-gray-800 relative overflow-hidden cursor-pointer"
+              style={{ background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.28) 0%, rgba(6, 182, 212, 0.28) 50%, rgba(59, 130, 246, 0.22) 100%)' }}
+            >
+              <span className="absolute top-3 left-3 z-20 text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-700 tracking-widest uppercase">{t('badge_community')}</span>
+              <div className="absolute top-3 right-3 z-20">
+                <AudioButton text={`${t('community')}. ${t('communityDesc')}`} className="bg-white/40 hover:bg-white/60 text-gray-800" />
               </div>
-              <h3 className="text-xl md:text-2xl font-black mb-1.5 text-gray-900">{t('community')}</h3>
-              <p className="text-xs md:text-sm text-gray-700 text-center px-2 leading-relaxed">{t('communityDesc')}</p>
+              <div className="absolute -bottom-5 -right-5 text-[88px] opacity-[0.12] pointer-events-none select-none rotate-12 z-0">👥</div>
+              <div className="absolute inset-0 bg-gradient-to-br from-emerald-300/15 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div className="relative z-10 h-full flex flex-col items-center justify-center">
+                <div className="w-14 h-14 md:w-[72px] md:h-[72px] rounded-2xl flex items-center justify-center mb-3 md:mb-4 shadow-lg transition-all duration-300 group-hover:scale-110 group-hover:shadow-emerald-300/50 group-hover:shadow-xl"
+                  style={{ background: 'linear-gradient(135deg, #065f46, #10b981)' }}>
+                  <Users2 className="w-7 h-7 md:w-9 md:h-9 text-white drop-shadow" />
+                </div>
+                <h3 className="text-xl md:text-2xl font-black mb-1.5 text-gray-900">{t('community')}</h3>
+                <p className="text-xs md:text-sm text-gray-700 text-center px-2 leading-relaxed">{t('communityDesc')}</p>
+              </div>
+              <div className="absolute bottom-3 right-4 opacity-0 group-hover:opacity-60 transition-opacity z-10">
+                <ArrowRight className="w-4 h-4 text-gray-700" />
+              </div>
             </div>
-            <div className="absolute bottom-3 right-4 opacity-0 group-hover:opacity-60 transition-opacity z-10">
-              <ArrowRight className="w-4 h-4 text-gray-700" />
+            {/* What's Happening Nearby Card (right) */}
+            <div className="h-48 md:h-64 flex items-stretch">
+              {/* @ts-ignore-next-line */}
+              {/* eslint-disable-next-line @typescript-eslint/no-var-requires */}
+              {React.createElement(require("./cards/WhatsHappeningNearbyCard").default)}
             </div>
           </div>
 
