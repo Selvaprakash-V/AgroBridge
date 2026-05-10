@@ -18,7 +18,7 @@ export async function GET(
     return NextResponse.json(comments);
   } catch (err) {
     console.error(err);
-    return NextResponse.json({ error: "Server error" }, { status: 500 });
+    return NextResponse.json([], { status: 200 });
   }
 }
 
@@ -44,7 +44,7 @@ export async function POST(
     return NextResponse.json(comment, { status: 201 });
   } catch (err) {
     console.error(err);
-    return NextResponse.json({ error: "Server error" }, { status: 500 });
+    return NextResponse.json({ error: "Service unavailable" }, { status: 503 });
   }
 }
 
@@ -60,6 +60,6 @@ export async function DELETE(
     return NextResponse.json({ ok: true });
   } catch (err) {
     console.error(err);
-    return NextResponse.json({ error: "Server error" }, { status: 500 });
+    return NextResponse.json({ error: "Service unavailable" }, { status: 503 });
   }
 }

@@ -2,6 +2,7 @@ import React from "react";
 import clsx from "clsx";
 import { useRouter } from "next/navigation";
 import { RadarIcon } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 
 interface WhatsHappeningNearbyCardProps {
@@ -10,6 +11,7 @@ interface WhatsHappeningNearbyCardProps {
 
 const WhatsHappeningNearbyCard: React.FC<WhatsHappeningNearbyCardProps> = ({ className }) => {
   const router = useRouter();
+  const { t } = useTranslation();
 
   return (
     <button
@@ -45,8 +47,8 @@ const WhatsHappeningNearbyCard: React.FC<WhatsHappeningNearbyCardProps> = ({ cla
           style={{ background: 'linear-gradient(135deg, #be2586, #ec4899)' }}>
           <RadarIcon className="w-7 h-7 md:w-9 md:h-9 text-white drop-shadow" />
         </div>
-        <h3 className="text-xl md:text-2xl font-black mb-1.5 text-gray-900">Whats Happening Around</h3>
-        <p className="text-xs md:text-sm text-gray-700 text-center px-2 leading-relaxed">What’s happening around your farm</p>
+        <h3 className="text-xl md:text-2xl font-black mb-1.5 text-gray-900">{t('whatsHappeningNearby', 'What\'s Happening Nearby')}</h3>
+        <p className="text-xs md:text-sm text-gray-700 text-center px-2 leading-relaxed">{t('whatsHappeningNearbyDesc', 'What\'s happening around your farm')}</p>
       </div>
     </button>
   );

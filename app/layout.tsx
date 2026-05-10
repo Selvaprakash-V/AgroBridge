@@ -1,15 +1,8 @@
 import type { Metadata, Viewport } from "next";
-import { Poppins } from "next/font/google";
 import "./globals.css";
 import "regenerator-runtime/runtime";
 import I18nProvider from "@/components/I18nProvider";
 import FarmingBackground from "@/components/FarmingBackground";
-
-const poppins = Poppins({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'https://agrobridge.vercel.app'),
@@ -54,7 +47,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${poppins.className} antialiased`}>
+      <body className="antialiased">
         <FarmingBackground />
         <I18nProvider>{children}</I18nProvider>
       </body>
