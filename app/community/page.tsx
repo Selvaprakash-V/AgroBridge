@@ -5,12 +5,13 @@ import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import {
-  Heart, MessageCircle, Send, Plus, X, Tag, ArrowLeft,
+  Heart, MessageCircle, Send, Plus, X, Tag, ArrowLeft, Languages, Loader2,
   Leaf, AlertTriangle, Droplets, Sun, Bug, Sprout, ImagePlus, Trash2,
 } from "lucide-react";
 import { compressImage } from "@/lib/image-compression";
 import ProfileHeader from "@/components/ProfileHeader";
 import { useStore } from "@/store/useStore";
+import { translateText } from "@/actions/translate-text";
 
 /* ── types ─────────────────────────────────────────────────── */
 interface Post {
@@ -150,8 +151,42 @@ function CommentThread({ postId, user }: { postId: string; user: StoredUser }) {
 
 function PostCard({ post, user, onLike }: { post: Post; user: StoredUser; onLike: (id: string) => void }) {
   const { t } = useTranslation();
+  const currentLanguage = useStore((state) => state.currentLanguage);
   const [showComments, setShowComments] = useState(false);
+  const [showTranslated, setShowTranslated] = useState(false);
+  const [translatedTitle, setTranslatedTitle] = useState(post.title);
+  const [translatedContent, setTranslatedContent] = useState(post.content);
+  const [translating, setTranslating] = useState(false);
   const tags = post.tags ? post.tags.split(",").map((t) => t.trim()).filter(Boolean) : [];
+
+  useEffect(() => {
+    setShowTranslated(false);
+    setTranslatedTitle(post.title);
+    setTranslatedContent(post.content);
+    setTranslating(false);
+  }, [post.id, post.title, post.content]);
+
+  async function handleTranslatePost() {
+    if (!currentLanguage || currentLanguage === "en-IN") return;
+
+    if (showTranslated) {
+      setShowTranslated(false);
+      return;
+    }
+
+    setTranslating(true);
+    try {
+      const [titleResult, contentResult] = await Promise.all([
+        translateText(post.title, currentLanguage),
+        translateText(post.content, currentLanguage),
+      ]);
+      setTranslatedTitle(titleResult);
+      setTranslatedContent(contentResult);
+      setShowTranslated(true);
+    } finally {
+      setTranslating(false);
+    }
+  }
 
   return (
     <motion.div
@@ -175,8 +210,8 @@ function PostCard({ post, user, onLike }: { post: Post; user: StoredUser; onLike
       </div>
 
       {/* body */}
-      <h3 className="font-bold text-gray-900 mb-1">{post.title}</h3>
-      <p className="text-sm text-gray-700 leading-relaxed mb-3">{post.content}</p>
+      <h3 className="font-bold text-gray-900 mb-1">{showTranslated ? translatedTitle : post.title}</h3>
+      <p className="text-sm text-gray-700 leading-relaxed mb-3">{showTranslated ? translatedContent : post.content}</p>
 
       {post.imageUrl && (
         <div className="rounded-2xl overflow-hidden mb-3 max-h-64">
@@ -201,6 +236,22 @@ function PostCard({ post, user, onLike }: { post: Post; user: StoredUser; onLike
           <MessageCircle className="w-4 h-4" />
           <span>{showComments ? t('hideBtn') : t('commentsBtn')}</span>
         </button>
+        {currentLanguage && currentLanguage !== "en-IN" && (
+          <button
+            onClick={handleTranslatePost}
+            disabled={translating}
+            className="ml-auto flex items-center gap-1.5 text-[11px] font-semibold px-2.5 py-1 rounded-full border border-emerald-200 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 disabled:opacity-60 transition-colors"
+          >
+            {translating ? <Loader2 className="w-3 h-3 animate-spin" /> : <Languages className="w-3 h-3" />}
+            <span>
+              {translating
+                ? t('translatingPost', 'Translating…')
+                : showTranslated
+                  ? t('showOriginal', 'Show original')
+                  : t('translatePost', 'Translate')}
+            </span>
+          </button>
+        )}
       </div>
 
       <AnimatePresence>
@@ -392,15 +443,8 @@ export default function CommunityPage() {
   const { t, i18n } = useTranslation();
   const router = useRouter();
   const currentLanguage = useStore((state) => state.currentLanguage);
-  const [user] = useState<StoredUser | null>(() => {
-    if (typeof window === "undefined") return null;
-    try {
-      const raw = localStorage.getItem("user");
-      return raw ? (JSON.parse(raw) as StoredUser) : null;
-    } catch {
-      return null;
-    }
-  });
+  const [user, setUser] = useState<StoredUser | null>(null);
+  const [mounted, setMounted] = useState(false);
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
@@ -413,8 +457,18 @@ export default function CommunityPage() {
   }, [currentLanguage, i18n]);
 
   useEffect(() => {
-    if (!user) router.push("/landing");
-  }, [user, router]);
+    try {
+      const raw = localStorage.getItem("user");
+      setUser(raw ? (JSON.parse(raw) as StoredUser) : null);
+    } catch {
+      setUser(null);
+    }
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (mounted && !user) router.push("/landing");
+  }, [user, router, mounted]);
 
   useEffect(() => {
     fetch("/api/community/posts")
@@ -438,11 +492,10 @@ export default function CommunityPage() {
       });
   }
 
+  const postsArray = Array.isArray(posts) ? posts : [];
   const filteredPosts = activeFilter === "all"
-    ? posts
-    : posts.filter((p) => p.tags?.split(',').map((x) => x.trim()).includes(activeFilter));
-
-  if (!user) return null;
+    ? postsArray
+    : postsArray.filter((p) => p.tags?.split(',').map((x) => x.trim()).includes(activeFilter));
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-emerald-50 via-white to-green-50">

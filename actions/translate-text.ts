@@ -24,6 +24,7 @@ export async function translateText(
       "kn-IN": "kn-IN",
       "ml-IN": "ml-IN",
       "mr-IN": "mr-IN",
+      "od-IN": "od-IN",
       "or-IN": "od-IN", // Odia code in Mayura
       "pa-IN": "pa-IN",
       "ta-IN": "ta-IN",

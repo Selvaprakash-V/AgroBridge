@@ -22,8 +22,10 @@ const nextConfig: NextConfig = {
     deviceSizes: [640, 750, 828, 1080, 1200, 1920],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
   },
-  // Add empty turbopack config to silence warning
-  turbopack: {},
+  // Pin Turbopack root to this workspace to avoid parent lockfile detection.
+  turbopack: {
+    root: __dirname,
+  },
 };
 
 // Note: next-pwa doesn't support Next.js 16 with Turbopack yet
